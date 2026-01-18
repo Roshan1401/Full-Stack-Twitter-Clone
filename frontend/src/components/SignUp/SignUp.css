@@ -1,0 +1,73 @@
+.signup-Container {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.signup-Container .logo {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f9fafb;
+}
+
+.signup-Container .logo img {
+  width: 100%;
+  max-width: 380px;
+}
+
+.signup-Container .form-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.signup-Container .form-container form {
+  width: 100%;
+  max-width: 400px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+}
+
+.signup-Container .form-container h2 {
+  margin-bottom: 28px;
+  font-size: 36px;
+  text-align: center;
+  color: #1d4ed8;
+}
+
+.signup-Container .form-container button {
+  margin-top: 12px;
+  padding: 14px;
+  border-radius: 10px;
+  width: 100%;
+  border: none;
+  background: #1d4ed8;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.signup-Container .form-container button:hover {
+  background: #1e40af;
+  transform: translateY(-1px) scale(1.01);
+}
+
+@media (max-width: 768px) {
+  .signup-Container {
+    flex-direction: column;
+  }
+
+  .signup-Container .logo {
+    height: 35vh;
+  }
+
+  .signup-Container .form-container {
+    padding: 20px;
+  }
+}

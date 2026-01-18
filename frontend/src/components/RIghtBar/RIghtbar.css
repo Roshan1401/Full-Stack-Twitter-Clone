@@ -1,0 +1,52 @@
+.RightBar-container {
+  height: 100%;
+  width: 100%;
+  max-width: 350px;
+}
+
+.card-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+  color: white;
+  border: 1px solid #2f3336;
+  width: 100%;
+  border-radius: 16px;
+  padding: 12px 0px;
+}
+
+.card-container h2 {
+  padding: 0 15px;
+  font-size: 1.2rem;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  border-radius: 999px;
+  gap: 10px;
+  padding: 12px 15px;
+  color: white;
+  background: #202327;
+}
+
+.search input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  color: white;
+  font-size: 0.95rem;
+}
+
+.profiles-container {
+  margin-top: 10px;
+  /* padding: 0 5px; */
+}
+
+.profiles-container ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}

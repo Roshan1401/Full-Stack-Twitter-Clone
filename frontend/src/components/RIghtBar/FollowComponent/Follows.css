@@ -1,0 +1,42 @@
+.container {
+  width: 100%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 15px;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  color: white;
+  gap: 5px;
+}
+
+.name {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.username {
+  font-size: 0.85rem;
+  color: #71767b;
+}
+.follow-btn {
+  margin-left: auto;
+}
+
+.follow-btn button {
+  background: white;
+  color: black;
+  border: none;
+  padding: 6px 16px;
+  border-radius: 999px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.follow-btn button:hover {
+  background: #e6e6e6;
+}

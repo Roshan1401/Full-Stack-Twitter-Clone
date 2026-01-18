@@ -1,0 +1,15 @@
+.tweet-textarea {
+    width: 100%;
+    min-height: 50px;
+    resize: none;
+    overflow: hidden;
+    font-size: 1.1rem;
+    line-height: 1.4;
+    background: transparent;
+    color: white;
+    border: none;
+    outline: none;
+     padding: 6px 10px;
+     font-family: sans-serif;
+     max-height: 300px;
+}
