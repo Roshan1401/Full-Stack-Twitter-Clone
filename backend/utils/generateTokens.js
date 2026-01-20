@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken"
 import { User } from "../models/user.model"
 import ApiError from "./ApiError.js"
 
-const generateTokens = (userId) => {
+const generateTokens = async (userId) => {
 
     const user = User.findById(userId)
 
@@ -31,7 +31,7 @@ const generateTokens = (userId) => {
     )
 
     user.refreshToken = refreshToken
-
+    await user.save({validateBeforeSave: false})
     return { accessToken, refreshToken }
 }
 
