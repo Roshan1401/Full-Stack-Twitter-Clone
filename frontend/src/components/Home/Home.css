@@ -66,3 +66,16 @@
   border-radius: 30px;
   cursor: pointer;
 }
+
+.post-options button:disabled {
+  background-color: gray;
+  color: black;
+  cursor: not-allowed;
+}
+
+.tweet .error{
+  color: #f4212e;
+  font-size: 0.85rem;
+  margin-top: -5px;
+
+}

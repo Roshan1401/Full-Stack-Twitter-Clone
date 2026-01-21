@@ -2,11 +2,8 @@ import React from 'react'
 import Navbar from './Navbar'
 import RightBar from '../RIghtBar/RIghtBar'
 import "../Home/Home.css"
-import userLogo from "../../assets/userLogo1.jpg"
-import Avatar from '../Avatar/Avatar.jsx'
-import TxtArea from "../Input/TxtArea.jsx"
-import { FiImage } from 'react-icons/fi'
 import Post from '../Post/Post.jsx'
+import AddPost from './AddPost.jsx'
 
 function Home() {
     return (
@@ -16,18 +13,7 @@ function Home() {
                     <Navbar />
                 </div>
                 <div className='posts-container'>
-                    <div className='add-post'>
-                        <div className='avatar'>
-                            <Avatar imgUrl={userLogo} />
-                        </div>
-                        <div className='tweet'>
-                            <TxtArea />
-                            <div className='post-options'>
-                                <FiImage className='image-icon' size={22} />
-                                <button>Post</button>
-                            </div>
-                        </div>
-                    </div>
+                    <AddPost />
                     <div className='posts-list'>
                         {/* Posts will be rendered here */}
                         <Post />
