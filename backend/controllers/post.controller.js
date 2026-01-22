@@ -110,7 +110,7 @@ const deletePost = asyncHandler(async (req, res) => {
 
 })
 
-const getPost = asyncHandler(async(req,res) => {
+const getPostById = asyncHandler(async(req,res) => {
     const {postId} = req.params;
 
     if (!isValidObjectId(postId)) {
@@ -131,4 +131,4 @@ const getPost = asyncHandler(async(req,res) => {
     )
 })
 
-export { addPost, updatePost,deletePost, getPost};
+export { addPost, updatePost,deletePost, getPostById};
