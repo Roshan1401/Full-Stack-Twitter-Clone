@@ -1,0 +1,77 @@
+.add-post {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 20px 0 20px;
+  /* border-bottom: 1px solid #2f3336; */
+  gap: 5px;
+}
+
+.add-post-main{
+    display: flex;
+}
+
+.tweet {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 10px;
+}
+.post-options {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  padding: 10px;
+  border-top: 1px solid #2f3336;
+}
+
+.post-options .image-icon {
+  font-size: 1.5rem;
+  color: #1da1f2;
+  cursor: pointer;
+}
+
+.post-options button {
+  padding: 10px 20px;
+  font-weight: bolder;
+  border-radius: 30px;
+  cursor: pointer;
+}
+
+.post-options button:disabled {
+  background-color: gray;
+  color: black;
+  cursor: not-allowed;
+}
+
+.tweet .error{
+  color: #f4212e;
+  font-size: 0.85rem;
+  margin-top: -5px;
+
+}
+
+.add-post-modal-header{
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.add-post-modal-header button{
+  background: transparent;
+  color: white;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  border-radius: 50%;
+  padding: 5px 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.add-post-modal-header button:hover{
+  background-color: gray;
+}

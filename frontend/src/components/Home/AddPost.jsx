@@ -5,7 +5,9 @@ import userLogo from "../../assets/userLogo1.jpg"
 import Avatar from '../Avatar/Avatar.jsx'
 import TxtArea from "../Input/TxtArea.jsx"
 import { FiImage } from 'react-icons/fi'
-function AddPost() {
+import "../Home/AddPost.css"
+
+function AddPost({variant ="inline", onClose}) {
 
     const {register, handleSubmit, watch,formState: {errors}} = useForm({
         defaultValues: {
@@ -21,7 +23,15 @@ function AddPost() {
     const content = watch("postContent")
     
     return (
-        <form className='add-post' onSubmit={handleSubmit(onSubmit)}>
+        <form className={`add-post add-post--${variant}`} onSubmit={handleSubmit(onSubmit)}>
+            {
+                variant === "modal" && (
+                    <div className='add-post-modal-header'>
+                        <button type="button" onClick={onClose}>✕</button>
+                    </div>
+                )
+            }
+            <div className='add-post-main'>
                                 <div className='avatar'>
                                     <Avatar imgUrl={userLogo} />
                                 </div>
@@ -52,6 +62,7 @@ function AddPost() {
                                         </label>
                                         <button type='submit' disabled={!content}>Post</button>
                                     </div>
+                                </div>
                                 </div>
                             </form>
     )

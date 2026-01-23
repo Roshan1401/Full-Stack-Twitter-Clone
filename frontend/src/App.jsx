@@ -1,5 +1,6 @@
 
 import './App.css'
+import AddPost from './components/Home/AddPost'
 import LeftBar from './components/LeftBar/LeftBar'
 import Follows from './components/RIghtBar/FollowComponent/Follows'
 import RightBar from './components/RIghtBar/RIghtBar'

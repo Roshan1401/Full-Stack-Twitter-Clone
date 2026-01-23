@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import logo from "../../assets/logo3.png"
 import { MdHome } from "react-icons/md";
@@ -9,6 +9,8 @@ import { CgProfile } from "react-icons/cg";
 import userLogo from "../../assets/userLogo1.jpg"
 import "../LeftBar/LeftBar.css"
 import Avatar from '../Avatar/Avatar';
+import Modal from '../Modal/Modal.jsx';
+import AddPost from '../Home/AddPost.jsx';
 
 function LeftBar() {
 
@@ -50,6 +52,9 @@ function LeftBar() {
             icon: <FiLogOut />
         },
     ]
+
+    const [showAddPost, setShowAddPost] = useState(false)
+
     return (
         <div className='nav-container'>
             <nav>
@@ -77,7 +82,7 @@ function LeftBar() {
 
                 </ul>
                 <div className='post-btn'>
-                    <button>Post</button>
+                    <button onClick={() => setShowAddPost(true)}>Post</button>
                 </div>
 
                 <button className='profile-btn'>
@@ -93,6 +98,14 @@ function LeftBar() {
                 </button>
 
             </nav>
+
+            {
+                showAddPost && (
+                    <Modal onClose={() => setShowAddPost(false)}>
+                        <AddPost variant='modal' onClose={() => setShowAddPost(false)}/>
+                    </Modal>
+                )
+            }
         </div>
     )
 }
