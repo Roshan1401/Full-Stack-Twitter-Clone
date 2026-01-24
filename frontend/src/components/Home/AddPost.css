@@ -78,13 +78,13 @@
 
 /* img preview container */
 
-.img-preview-container{
+.file-preview-container{
   display: grid;
   grid-template-columns: repeat(2,1fr);
   gap: 6px;
 }
 
-.img-previw-item{
+.file-previw-item{
   position: relative;
   border-radius: 15px;
   aspect-ratio: 0.8/1;
@@ -93,20 +93,20 @@
   border: 1px solid #2f3336;
 }
 
-.img-preview{
+.file-preview{
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.img-preview-close{
+.file-preview-close{
   position: absolute;
   top: 6px;
   right: 6px;
   z-index: 2;
 }
 
-.img-preview-close button {
+.file-preview-close button {
   background: rgba(15, 20, 25, 0.75);
   color: #fff;
   border: none;
@@ -121,7 +121,7 @@
   transition: background 0.2s ease, transform 0.1s ease;
 }
 
-.img-preview-close button:hover {
-  background:gray;
+.file-preview-close button:hover {
+  background:rgba(0, 0, 0, 0.4);
   transform: scale(1.05);
 }

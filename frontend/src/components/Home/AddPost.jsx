@@ -9,17 +9,17 @@ import "../Home/AddPost.css"
 
 function AddPost({ variant = "inline", onClose }) {
 
-    const [images, setImages] = useState([])
+    const [selectFile, setSelectFile] = useState([])
 
-    const handleImages = (e) => {
+    const handleFiles = (e) => {
         const files = Array.from(e.target.files)
 
-        setImages((prev) => [...prev, ...files]);
+        setSelectFile((prev) => [...prev, ...files]);
         // e.target.value(null)
     }
 
-    const removeImg = (ItemIndex) => {
-        setImages((prev) => prev.filter((_, index) => index !== ItemIndex))
+    const removeFile = (ItemIndex) => {
+        setSelectFile((prev) => prev.filter((_, index) => index !== ItemIndex))
     }
 
     const { register, handleSubmit, watch, formState: { errors } } = useForm({
@@ -60,20 +60,35 @@ function AddPost({ variant = "inline", onClose }) {
                             })
                     } />
 
-                    <div className="img-preview-container">
-                        {images.map((imgFile, index) => (
-                            <div className="img-previw-item">
-                                <img src={URL.createObjectURL(imgFile)}
-                                     className='img-preview' />
-                                     <div className='img-preview-close'>
-                                <button type='button'
-                                    onClick={() => removeImg(index)}>
-                                    ✕
-                                </button>
+                    <div className="file-preview-container">
+                        {selectFile.map((file, index) => (
+                            <div className="file-previw-item" key={index}>
+
+                                {file.type.startsWith("image/") ? (
+                                    <img
+                                        src={URL.createObjectURL(file)}
+                                        className="file-preview"
+                                        alt="preview"
+                                    />
+                                ) : file.type.startsWith("video/") ? (
+                                    <video
+                                        src={URL.createObjectURL(file)}
+                                        className="file-preview"
+                                        controls
+                                        muted
+                                    />
+                                ) : null}
+
+                                <div className="file-preview-close">
+                                    <button
+                                        type="button"
+                                        onClick={() => removeFile(index)}
+                                    >
+                                        ✕
+                                    </button>
                                 </div>
                             </div>
-                        )
-                        )}
+                        ))}
                     </div>
 
                     {errors.postContent && (
@@ -87,10 +102,10 @@ function AddPost({ variant = "inline", onClose }) {
                                 className="file-input"
                                 hidden
                                 multiple
-                                accept='image/*'
-                                {...register("images", {
+                                accept="image/*,video/*"
+                                {...register("files", {
                                     onChange: (e) => {
-                                        handleImages(e)
+                                        handleFiles(e)
                                     }
                                 })} />
                         </label>
