@@ -13,8 +13,8 @@
 }
 
 .signup-Container .logo img {
-  width: 100%;
-  max-width: 380px;
+  width: 50%;
+  height: 50%;
 }
 
 .signup-Container .form-container {

@@ -13,8 +13,7 @@
 }
 
 .login-Container .logo img {
-  width: 100%;
-  max-width: 450px;
+  height: 50%;
 }
 
 .login-Container .form-container {

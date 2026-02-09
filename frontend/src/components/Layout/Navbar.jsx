@@ -18,7 +18,11 @@ function Navbar() {
   return (
     <div className="navbar">
       {navItems.map((item) => (
-        <div className="nav-items" onClick={() => setActive(item.id)}>
+        <div
+          key={item.id}
+          className="nav-items"
+          onClick={() => setActive(item.id)}
+        >
           <div className="nav-text">
             <span style={{ color: `${active === item.id ? "white" : "gray"}` }}>
               {item.name}

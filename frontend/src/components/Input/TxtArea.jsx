@@ -20,7 +20,7 @@ function TxtArea({ ...props }, ref) {
         }
       }}
       onInput={handleInput}
-      placeholder={props.placeholder ? props.placeholder : "What;s happening?"}
+      placeholder={props.placeholder ? props.placeholder : "What's happening?"}
       className="tweet-textarea"
     />
   );

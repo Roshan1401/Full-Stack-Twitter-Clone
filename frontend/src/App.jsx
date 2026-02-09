@@ -10,6 +10,7 @@ import {
   logout as authLogout,
   login as authLogin,
 } from "./Redux/auth/authSlice";
+import { Outlet } from "react-router-dom";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -24,10 +25,13 @@ function App() {
 
         const data = await res.json();
 
-        if (data.status !== "error") {
+        if (data.success) {
+          console.log(data);
+
           dispatch(authLogin({ userInfo: data }));
         } else {
           dispatch(authLogout());
+          console.log("Logout");
         }
       } catch (error) {
         dispatch(authLogout());
@@ -44,7 +48,7 @@ function App() {
         <div className="component-container">
           <LeftBar />
           <main>
-            <Profile />
+            <Outlet />
           </main>
           <div className="rightBar">
             <RightBar />

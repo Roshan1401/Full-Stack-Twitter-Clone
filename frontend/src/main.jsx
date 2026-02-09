@@ -4,12 +4,48 @@ import "./index.css";
 import App from "./App.jsx";
 import { Provider } from "react-redux";
 import store from "./Redux/store/store.js";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import {
+  Home,
+  AuthLayout,
+  Login,
+  SignUp,
+  AddPost,
+} from "./components/index.js";
 
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <BrowserRouter>
-      <App />
+      <Routes>
+        <Route path="/" element={<App />}>
+          <Route index element={<Home />} />
+          <Route
+            path="/add-post"
+            element={
+              <AuthLayout authentication>
+                <AddPost />
+              </AuthLayout>
+            }
+          />
+        </Route>
+        <Route
+          path="/login"
+          element={
+            <AuthLayout authentication={false}>
+              <Login />
+            </AuthLayout>
+          }
+        />
+        <Route
+          path="/signUp"
+          element={
+            <AuthLayout authentication={false}>
+              <SignUp />
+            </AuthLayout>
+          }
+        />
+      </Routes>
     </BrowserRouter>
   </Provider>,
 );

@@ -6,8 +6,8 @@
   gap: 5px;
 }
 
-.add-post-main{
-    display: flex;
+.add-post-main {
+  display: flex;
 }
 
 .tweet {
@@ -38,6 +38,7 @@
   font-weight: bolder;
   border-radius: 30px;
   cursor: pointer;
+  background: white;
 }
 
 .post-options button:disabled {
@@ -46,20 +47,19 @@
   cursor: not-allowed;
 }
 
-.tweet .error{
+.tweet .error {
   color: #f4212e;
   font-size: 0.85rem;
   margin-top: -5px;
-
 }
 
-.add-post-modal-header{
+.add-post-modal-header {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 10px;
 }
 
-.add-post-modal-header button{
+.add-post-modal-header button {
   background: transparent;
   color: white;
   border: none;
@@ -72,19 +72,19 @@
   align-items: center;
 }
 
-.add-post-modal-header button:hover{
+.add-post-modal-header button:hover {
   background-color: gray;
 }
 
 /* img preview container */
 
-.file-preview-container{
+.file-preview-container {
   display: grid;
-  grid-template-columns: repeat(2,1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 6px;
 }
 
-.file-previw-item{
+.file-previw-item {
   position: relative;
   border-radius: 15px;
   aspect-ratio: 0.8/1;
@@ -93,13 +93,13 @@
   border: 1px solid #2f3336;
 }
 
-.file-preview{
+.file-preview {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.file-preview-close{
+.file-preview-close {
   position: absolute;
   top: 6px;
   right: 6px;
@@ -118,10 +118,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s ease, transform 0.1s ease;
+  transition:
+    background 0.2s ease,
+    transform 0.1s ease;
 }
 
 .file-preview-close button:hover {
-  background:rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.4);
   transform: scale(1.05);
 }

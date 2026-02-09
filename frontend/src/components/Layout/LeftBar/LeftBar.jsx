@@ -11,6 +11,7 @@ import "./LeftBar.css";
 import Avatar from "../../Avatar/Avatar.jsx";
 import Modal from "../../Modal/Modal.jsx";
 import AddPost from "../../Post/AddPost.jsx";
+import OverFlowMenu from "../../common/OverFlowMenu.jsx";
 
 function LeftBar() {
   const navigate = useNavigate();
@@ -45,15 +46,22 @@ function LeftBar() {
       slug: "/setting",
       icon: <FiSettings />,
     },
-
-    {
-      name: "Logout",
-      slug: "/logout",
-      icon: <FiLogOut />,
-    },
   ];
 
   const [showAddPost, setShowAddPost] = useState(false);
+
+  const handleLogout = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/api/v1/auth/logout", {
+        method: "post",
+        credentials: "include",
+      });
+      const data = await res.json();
+      if (data.success) {
+        console.log("Logout succss ful");
+      }
+    } catch (error) {}
+  };
 
   return (
     <div className="nav-container">
@@ -94,6 +102,9 @@ function LeftBar() {
               <div>Roshan</div>
               <div>@PatilRosha99</div>
             </div>
+            <OverFlowMenu>
+              <button onClick={() => handleLogout()}>Logout</button>
+            </OverFlowMenu>
           </div>
         </button>
       </nav>
