@@ -12,9 +12,10 @@ import Avatar from "../../Avatar/Avatar.jsx";
 import Modal from "../../Modal/Modal.jsx";
 import AddPost from "../../Post/AddPost.jsx";
 import OverFlowMenu from "../../common/OverFlowMenu.jsx";
+import { useDispatch } from "react-redux";
+import { logout as authLogout } from "../../../Redux/auth/authSlice";
 
 function LeftBar() {
-  const navigate = useNavigate();
   const barItems = [
     {
       name: "Home",
@@ -50,6 +51,9 @@ function LeftBar() {
 
   const [showAddPost, setShowAddPost] = useState(false);
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const handleLogout = async () => {
     try {
       const res = await fetch("http://localhost:5000/api/v1/auth/logout", {
@@ -59,8 +63,12 @@ function LeftBar() {
       const data = await res.json();
       if (data.success) {
         console.log("Logout succss ful");
+        dispatch(authLogout());
+        navigate("/login");
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -94,7 +102,7 @@ function LeftBar() {
         </div>
 
         <button className="profile-btn">
-          <div className="profile-container">
+          <div className="profile-container group">
             <div className="profile-img">
               <Avatar imgUrl={userLogo} />
             </div>
@@ -103,7 +111,9 @@ function LeftBar() {
               <div>@PatilRosha99</div>
             </div>
             <OverFlowMenu>
-              <button onClick={() => handleLogout()}>Logout</button>
+              <button className="" onClick={() => handleLogout()}>
+                Logout
+              </button>
             </OverFlowMenu>
           </div>
         </button>

@@ -53,10 +53,10 @@
   justify-content: center;
 }
 
-.post-menu-btn:hover {
+/* .post-menu-btn:hover {
   background-color: rgba(29, 155, 240, 0.2);
   color: #1d9bf0;
-}
+} */
 
 .post-menu-dropdown .delete {
   color: #f4212e;

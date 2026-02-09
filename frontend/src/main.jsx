@@ -1,4 +1,3 @@
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
@@ -19,7 +18,14 @@ createRoot(document.getElementById("root")).render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />}>
-          <Route index element={<Home />} />
+          <Route
+            index
+            element={
+              <AuthLayout authentication>
+                <Home />
+              </AuthLayout>
+            }
+          />
           <Route
             path="/add-post"
             element={
@@ -38,7 +44,7 @@ createRoot(document.getElementById("root")).render(
           }
         />
         <Route
-          path="/signUp"
+          path="/signup"
           element={
             <AuthLayout authentication={false}>
               <SignUp />

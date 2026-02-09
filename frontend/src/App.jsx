@@ -4,7 +4,7 @@ import Profile from "./components/pages/Profile";
 // import Follows from "./components/RIghtBar/FollowComponent/Follows";
 import RightBar from "./components/Layout/RIghtBar/RightBar";
 // import { Login, SignUp, Home } from "./index";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useNavigate } from "react";
 import { useDispatch } from "react-redux";
 import {
   logout as authLogout,
@@ -24,13 +24,14 @@ function App() {
         });
 
         const data = await res.json();
-
+        const user = data.data;
         if (data.success) {
           console.log(data);
 
-          dispatch(authLogin({ userInfo: data }));
+          dispatch(authLogin({ userInfo: user }));
         } else {
           dispatch(authLogout());
+
           console.log("Logout");
         }
       } catch (error) {

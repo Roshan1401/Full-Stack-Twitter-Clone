@@ -6,6 +6,8 @@ import { useForm } from "react-hook-form";
 import "./SignUp.css";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login as authLogin } from "../../../Redux/auth/authSlice.js";
 
 function SignUp() {
   const {
@@ -15,10 +17,11 @@ function SignUp() {
   } = useForm();
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const submit = async (data) => {
     console.log(data);
-    const res = await fetch("http://localhost:5000/api/v1/auth/signup", {
+    const signupRes = await fetch("http://localhost:5000/api/v1/auth/signup", {
       method: "post",
       headers: {
         "Content-Type": "application/json",
@@ -26,23 +29,29 @@ function SignUp() {
       body: JSON.stringify(data),
     });
 
-    const responseData = await res.json();
+    const signupData = await signupRes.json();
 
-    if (responseData.success) {
-      console.log("Signup success");
-      const res = await fetch("http://localhost:5000/api/v1/auth/login", {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+    if (!signupData.success) {
+      alert(signupData.message);
+      return;
+    }
 
-      const responseData = await res.json();
-      if (responseData.success) {
-        navigate("/");
-      }
-    } else {
+    console.log("Signup success");
+
+    const loginRes = await fetch("http://localhost:5000/api/v1/auth/login", {
+      method: "post",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    const loginData = await loginRes.json();
+
+    if (loginData.success) {
+      dispatch(authLogin({ userInfo: loginData.data.user }));
+      navigate("/");
     }
   };
   return (

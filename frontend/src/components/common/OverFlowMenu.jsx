@@ -25,7 +25,7 @@ function OverFlowMenu({ children }) {
   return (
     <div className="post-menu-wrapper" ref={menuRef}>
       <button
-        className="post-menu-btn"
+        className="post-menu-btn hover:bg-[rgba(29,155,240,0.2)] hover:text-[#1d9bf0]"
         onClick={() => setShowMenu((prev) => !prev)}
       >
         <BsThreeDots size={18} />

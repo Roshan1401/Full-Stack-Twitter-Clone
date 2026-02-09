@@ -5,10 +5,13 @@ import { useForm } from "react-hook-form";
 import "./Login.css";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login as authLogin } from "../../../Redux/auth/authSlice.js";
 
 function Login() {
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const submit = async (data) => {
     const res = await fetch("http://localhost:5000/api/v1/auth/login", {
@@ -23,7 +26,10 @@ function Login() {
     const responseData = await res.json();
 
     if (responseData.success) {
+      dispatch(authLogin({ userInfo: responseData.data.user }));
       navigate("/");
+    } else {
+      alert(responseData.message);
     }
   };
 
@@ -46,6 +52,7 @@ function Login() {
             })}
           />
           <Input
+            type="password"
             placeholder="Enter Your Password"
             {...register("password", {
               required: true,
