@@ -5,130 +5,129 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { isValidObjectId } from "mongoose";
 
-
 const addPost = asyncHandler(async (req, res) => {
+  const { postContent } = req.body;
 
-    const { postContent } = req.body;
+  if (!postContent?.trim()) {
+    throw new ApiError(400, "Post content is required");
+  }
 
-    if (!postContent?.trim()) {
-        throw new ApiError(400, "Post content is required");
+  if (!req.user?._id) {
+    throw new ApiError(401, "Unauthorized! Please login to continue.");
+  }
+
+  const fileImages = req.files || [];
+
+  const uploadedImages = [];
+
+  for (const file of fileImages) {
+    const uploadedImage = await uploadOnCloudinary(file.path);
+    if (uploadedImage) {
+      uploadedImages.push({
+        url: uploadedImage.secure_url,
+        publicId: uploadedImage.public_id,
+      });
     }
+  }
 
-    if (!req.user?._id) {
-        throw new ApiError(401, "Unauthorized! Please login to continue.");
-    }
+  const newPost = await Post.create({
+    content: postContent,
+    images: uploadedImages,
+    author: req.user?._id,
+  });
 
-    const fileImages = req.files || []
-
-    const uploadedImages = [];
-
-    for (const file of fileImages) {
-        const uploadedImage = await uploadOnCloudinary(file.path);
-        if (uploadedImage) {
-            uploadedImages.push({
-                url: uploadedImage.secure_url,
-                publicId: uploadedImage.public_id
-            })
-        }
-    }
-
-    const newPost = await Post.create({
-        content: postContent,
-        images: uploadedImages,
-        author: req.user?._id
-    })
-
-    res.status(201).json(
-        new ApiResponse(201, "Post created successfully", newPost)
-    )
-
-})
+  res
+    .status(201)
+    .json(new ApiResponse(201, "Post created successfully", newPost));
+});
 
 const updatePost = asyncHandler(async (req, res) => {
+  //TODO : image update continue
 
-    //TODO : image update continue
+  const { postId } = req.params;
+  const { postContent } = req.body;
 
-    const { postId } = req.params;
-    const { postContent } = req.body;
+  if (!isValidObjectId(postId)) {
+    throw new ApiError(400, "Invalid Post id.");
+  }
 
-    if (!isValidObjectId(postId)) {
-        throw new ApiError(400, "Invalid Post id.");
-    }
+  if (!req.user?._id) {
+    throw new ApiError(401, "Unauthorized! Please login to continue.");
+  }
 
-    if (!req.user?._id) {
-        throw new ApiError(401, "Unauthorized! Please login to continue.")
-    }
+  const post = await Post.findById(postId);
 
-    const post = await Post.findById(postId)
+  if (!post) {
+    throw new ApiError(404, "Post not found.");
+  }
 
-    if (!post) {
-        throw new ApiError(404, "Post not found.")
-    }
+  if (post.author.toString() !== req.user._id.toString()) {
+    throw new ApiError(403, "Only can author update this post.");
+  }
 
-    if (post.author.toString() !== req.user._id.toString()) {
-        throw new ApiError(403, "Only can author update this post.")
-    }
+  if (!postContent.trim()) {
+    throw new ApiError(400, "Post content is required.");
+  }
 
-    if (!postContent.trim()) {
-        throw new ApiError(400, "Post content is required.");
-    }
+  post.content = postContent || post.content;
 
-    post.content = postContent || post.content
+  await post.save();
 
-    await post.save();
-
-    res.status(200).json(
-        new ApiResponse(200, "Post update successfully.", post)
-    )
-
-})
+  res.status(200).json(new ApiResponse(200, "Post update successfully.", post));
+});
 
 const deletePost = asyncHandler(async (req, res) => {
+  const { postId } = req.params;
 
-    const { postId } = req.params
+  if (!req.user?._id) {
+    throw new ApiError(401, "Unauthorized! Please login to continue.");
+  }
 
-    if (!req.user?._id) {
-        throw new ApiError(401, "Unauthorized! Please login to continue.")
-    }
+  const post = await Post.findById(postId);
 
-    const post = await Post.findById(postId);
+  if (!post) {
+    throw new ApiError(404, "Post not found.");
+  }
 
-    if (!post) {
-        throw new ApiError(404, "Post not found.")
-    }
+  if (post.author.toString() !== req.user._id.toString()) {
+    throw new ApiError(403, "Only can author delete this post.");
+  }
 
-    if (post.author.toString() !== req.user._id.toString()) {
-        throw new ApiError(403, "Only can author delete this post.")
-    }
+  post.isDeleted = true;
+  await post.save();
 
-    post.isDeleted = true;
-    await post.save();
-
-    res.status(200).json(
-        new ApiResponse(200, "Post deleted successfully.")
-    );
-
-})
+  res.status(200).json(new ApiResponse(200, "Post deleted successfully."));
+});
 
 const getPostById = asyncHandler(async (req, res) => {
-    const { postId } = req.params;
+  const { postId } = req.params;
 
-    if (!isValidObjectId(postId)) {
-        throw new ApiError(400, "Invalid Post id.");
-    }
+  if (!isValidObjectId(postId)) {
+    throw new ApiError(400, "Invalid Post id.");
+  }
 
-    const post = await Post.findOne({
-        _id: postId,
-        isDeleted: false
-    }).populate("author", "username avatar");
+  const post = await Post.findOne({
+    _id: postId,
+    isDeleted: false,
+  }).populate("author", "username avatar");
 
-    if (!post) {
-        throw new ApiError(404, "Post not found.")
-    }
+  if (!post) {
+    throw new ApiError(404, "Post not found.");
+  }
 
-    res.status(200).json(
-        new ApiResponse(200, "Post fetched successfully.", post)
-    )
-})
+  res
+    .status(200)
+    .json(new ApiResponse(200, "Post fetched successfully.", post));
+});
 
-export { addPost, updatePost, deletePost, getPostById };
+const getAllPosts = asyncHandler(async (req, res) => {
+  const posts = await Post.find({ isDeleted: false })
+    .populate("author", "username avatar")
+    .sort({ createdAt: -1 });
+
+  res
+    .status(200)
+    .json(new ApiResponse(200, "Posts fetched successfully.", posts));
+});
+
+export { addPost, updatePost, deletePost, getPostById, getAllPosts };

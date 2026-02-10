@@ -1,14 +1,21 @@
 import { Router } from "express";
 import { authenticateUser } from "../middleware/auth.middleware.js";
-import { addPost, deletePost, getPostById, updatePost } from "../controllers/post.controller.js";
+import {
+  addPost,
+  deletePost,
+  getPostById,
+  updatePost,
+  getAllPosts,
+} from "../controllers/post.controller.js";
 
-const router = Router()
+const router = Router();
 
-router.use(authenticateUser)
+router.use(authenticateUser);
 
 router.route("/").post(addPost);
-router.route("/:postId").patch(updatePost)
-router.route("/:postId").delete(deletePost)
-router.route("/:postId").get(getPostById)
+router.route("/:postId").patch(updatePost);
+router.route("/:postId").delete(deletePost);
+router.route("/:postId").get(getPostById);
+router.route("/").get(getAllPosts);
 
-export default router
+export default router;

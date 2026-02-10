@@ -5,23 +5,10 @@ import { FaRegHeart, FaRegComment, FaRegBookmark } from "react-icons/fa";
 import "./Post.css";
 import OverFlowMenu from "../common/OverFlowMenu";
 
-function Post() {
+function Post({ post }) {
+  const { content, images, author } = post;
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef(null);
-  const images = [
-    {
-      id: 1,
-      url: "userLogo1.jpg",
-    },
-    {
-      id: 2,
-      url: "userLogo1.jpg",
-    },
-    {
-      id: 3,
-      url: "calsthsnic.jpeg",
-    },
-  ];
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -56,8 +43,8 @@ function Post() {
       </div>
       <div className="post-content">
         <div className="post-header">
-          <span className="post-name">Edith</span>
-          <span className="post-username">@patilRosha99</span>
+          <span className="post-name">{author.name}</span>
+          <span className="post-username">{author.username}</span>
           <span className="post-time">· 2h</span>
 
           <OverFlowMenu>
@@ -67,7 +54,7 @@ function Post() {
             </button>
           </OverFlowMenu>
         </div>
-        <div className="post-text">This is a sample post content.</div>
+        <div className="post-text">{content}</div>
         <div
           className={`my-2 mt-5 grid gap-1 ${images.length === 1 ? "grid-cols-1" : "grid-cols-2"} overflow-hidden`}
         >
@@ -84,9 +71,6 @@ function Post() {
               />
             </div>
           ))}
-          {/* <img src="userLogo1.jpg" className="rounded-lg" /> */}
-          {/* <img src="banner.jpg" /> */}
-          {/* <img src="banner.jpg" /> */}
         </div>
 
         <div className="post-actions">
