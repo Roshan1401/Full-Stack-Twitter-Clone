@@ -17,10 +17,10 @@ function Post() {
       id: 2,
       url: "userLogo1.jpg",
     },
-    // {
-    //   id: 3,
-    //   url: "calsthsnic.jpeg",
-    // },
+    {
+      id: 3,
+      url: "calsthsnic.jpeg",
+    },
   ];
 
   useEffect(() => {
@@ -79,7 +79,7 @@ function Post() {
               <img
                 key={image.id}
                 src={image.url}
-                className="rounded-lg object-cover"
+                className="h-full w-full rounded-lg object-cover"
                 alt={`Post Image ${image.id}`}
               />
             </div>
