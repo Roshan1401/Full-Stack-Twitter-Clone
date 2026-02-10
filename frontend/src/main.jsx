@@ -12,6 +12,7 @@ import {
   SignUp,
   AddPost,
 } from "./components/index.js";
+import Profile from "./components/pages/Profile.jsx";
 
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
@@ -20,6 +21,7 @@ createRoot(document.getElementById("root")).render(
         <Route path="/" element={<App />}>
           <Route
             index
+            path="/home"
             element={
               <AuthLayout authentication>
                 <Home />
@@ -31,6 +33,14 @@ createRoot(document.getElementById("root")).render(
             element={
               <AuthLayout authentication>
                 <AddPost />
+              </AuthLayout>
+            }
+          />
+          <Route
+            path="/profile/:username"
+            element={
+              <AuthLayout authentication>
+                <Profile />
               </AuthLayout>
             }
           />

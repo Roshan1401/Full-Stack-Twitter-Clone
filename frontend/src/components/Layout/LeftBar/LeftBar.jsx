@@ -12,10 +12,13 @@ import Avatar from "../../Avatar/Avatar.jsx";
 import Modal from "../../Modal/Modal.jsx";
 import AddPost from "../../Post/AddPost.jsx";
 import OverFlowMenu from "../../common/OverFlowMenu.jsx";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout as authLogout } from "../../../Redux/auth/authSlice";
 
 function LeftBar() {
+  const user = useSelector((state) => state.auth.userInfo);
+  const username = user?.username;
+
   const barItems = [
     {
       name: "Home",
@@ -39,7 +42,7 @@ function LeftBar() {
     },
     {
       name: "Profile",
-      slug: "/profile",
+      slug: `/profile/${username}`,
       icon: <CgProfile />,
     },
     {

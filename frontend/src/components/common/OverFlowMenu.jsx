@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { BsThreeDots } from "react-icons/bs";
 import "./OverFlowMenu.css";
 
-function OverFlowMenu({ children }) {
+function OverFlowMenu({ children, className }) {
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef(null);
 
@@ -25,7 +25,7 @@ function OverFlowMenu({ children }) {
   return (
     <div className="post-menu-wrapper" ref={menuRef}>
       <button
-        className="post-menu-btn hover:bg-[rgba(29,155,240,0.2)] hover:text-[#1d9bf0]"
+        className={`post-menu-btn ${className}`}
         onClick={() => setShowMenu((prev) => !prev)}
       >
         <BsThreeDots size={18} />

@@ -47,7 +47,9 @@ function App() {
     <>
       <div className="main-container">
         <div className="component-container">
-          <LeftBar />
+          <div className="leftBar">
+            <LeftBar />
+          </div>
           <main>
             <Outlet />
           </main>

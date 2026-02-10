@@ -8,6 +8,20 @@ import OverFlowMenu from "../common/OverFlowMenu";
 function Post() {
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef(null);
+  const images = [
+    {
+      id: 1,
+      url: "userLogo1.jpg",
+    },
+    {
+      id: 2,
+      url: "userLogo1.jpg",
+    },
+    // {
+    //   id: 3,
+    //   url: "calsthsnic.jpeg",
+    // },
+  ];
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -54,7 +68,26 @@ function Post() {
           </OverFlowMenu>
         </div>
         <div className="post-text">This is a sample post content.</div>
-        <div className="images"></div>
+        <div
+          className={`my-2 mt-5 grid gap-1 ${images.length === 1 ? "grid-cols-1" : "grid-cols-2"} overflow-hidden`}
+        >
+          {images.map((image) => (
+            <div
+              key={image.id}
+              className="overflow-hidden rounded-lg border border-gray-500"
+            >
+              <img
+                key={image.id}
+                src={image.url}
+                className="rounded-lg object-cover"
+                alt={`Post Image ${image.id}`}
+              />
+            </div>
+          ))}
+          {/* <img src="userLogo1.jpg" className="rounded-lg" /> */}
+          {/* <img src="banner.jpg" /> */}
+          {/* <img src="banner.jpg" /> */}
+        </div>
 
         <div className="post-actions">
           <button className="action-btn heart-btn">

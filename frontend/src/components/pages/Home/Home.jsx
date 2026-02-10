@@ -17,6 +17,19 @@ function Home() {
           <div className="posts-list">
             {/* Posts will be rendered here */}
             <Post />
+            <Post />
+            <Post />
+            <Post />
+            <Post />
+            <Post />
+            <Post />
+            <Post />
+            <Post />
+            <Post />
+            <Post />
+            <Post />
+            <Post />
+            <Post />
           </div>
         </div>
       </div>

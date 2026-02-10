@@ -1,6 +1,6 @@
 import React from "react";
 
-function ProfileStats({ onOpen }) {
+function ProfileStats({ user, onOpen }) {
   return (
     <div className="relative">
       <div className="h-45 w-full border">
@@ -30,10 +30,10 @@ function ProfileStats({ onOpen }) {
 
         <div className="space-y-3 text-white">
           <div className="flex flex-col gap-0">
-            <h1 className="m-0 text-xl font-bold">Roshan</h1>
+            <h1 className="m-0 text-xl font-bold">{user.name}</h1>
 
             <span className="text-sm text-[rgb(113,118,123)]">
-              @patilroshan
+              {user.username}
             </span>
           </div>
 
