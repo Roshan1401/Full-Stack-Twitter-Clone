@@ -7,15 +7,16 @@ import {
   updatePost,
   getAllPosts,
 } from "../controllers/post.controller.js";
+import { upload } from "../middleware/multer.middlewaer.js";
 
 const router = Router();
 
 router.use(authenticateUser);
 
-router.route("/").post(addPost);
+router.route("/getAllPosts").get(getAllPosts);
+router.route("/").post(upload.array("files"), addPost);
 router.route("/:postId").patch(updatePost);
 router.route("/:postId").delete(deletePost);
 router.route("/:postId").get(getPostById);
-router.route("/").get(getAllPosts);
 
 export default router;

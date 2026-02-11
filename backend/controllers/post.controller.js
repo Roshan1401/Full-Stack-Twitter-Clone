@@ -34,7 +34,7 @@ const addPost = asyncHandler(async (req, res) => {
     content: postContent,
     images: uploadedImages,
     author: req.user?._id,
-  });
+  }).then((post) => post.populate("author", "name username avatar"));
 
   res
     .status(201)
@@ -122,8 +122,9 @@ const getPostById = asyncHandler(async (req, res) => {
 
 const getAllPosts = asyncHandler(async (req, res) => {
   const posts = await Post.find({ isDeleted: false })
-    .populate("author", "username avatar")
+    .populate("author", "name username avatar")
     .sort({ createdAt: -1 });
+  console.log(posts);
 
   res
     .status(200)
