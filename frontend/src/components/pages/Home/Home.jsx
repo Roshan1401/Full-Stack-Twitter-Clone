@@ -9,6 +9,10 @@ import { useEffect, useState } from "react";
 function Home() {
   const [posts, setPosts] = useState([]);
 
+  const addNewPost = (newPost) => {
+    setPosts((prev) => [newPost, ...prev]);
+  };
+
   useEffect(() => {
     fetchPosts();
   }, []);
@@ -25,7 +29,7 @@ function Home() {
 
       const data = await res.json();
       if (data.success) {
-        console.log(data);
+        // console.log(data);
         setPosts(data.data);
       }
     } catch (error) {
@@ -40,7 +44,7 @@ function Home() {
           <Navbar />
         </div>
         <div className="posts-container">
-          <AddPost />
+          <AddPost addNewPost={addNewPost} />
           <div className="posts-list">
             {/* Posts will be rendered here */}
             {posts.map((post) => (

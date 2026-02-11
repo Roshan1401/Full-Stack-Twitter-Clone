@@ -55,23 +55,26 @@ function Post({ post }) {
           </OverFlowMenu>
         </div>
         <div className="post-text">{content}</div>
-        <div
-          className={`my-2 mt-5 grid gap-1 ${images.length === 1 ? "grid-cols-1" : "grid-cols-2"} overflow-hidden`}
-        >
-          {images.map((image) => (
-            <div
-              key={image.id}
-              className="overflow-hidden rounded-lg border border-gray-500"
-            >
-              <img
+
+        {images.length > 0 && (
+          <div
+            className={`my-2 mt-5 grid gap-1 ${images.length === 1 ? "grid-cols-1" : "grid-cols-2"} overflow-hidden`}
+          >
+            {images.map((image) => (
+              <div
                 key={image.id}
-                src={image.url}
-                className="h-full w-full rounded-lg object-cover"
-                alt={`Post Image ${image.id}`}
-              />
-            </div>
-          ))}
-        </div>
+                className="overflow-hidden rounded-lg border border-gray-500"
+              >
+                <img
+                  key={image.id}
+                  src={image.url}
+                  className="h-full w-full rounded-lg object-cover"
+                  alt={`Post Image ${image.id}`}
+                />
+              </div>
+            ))}
+          </div>
+        )}
 
         <div className="post-actions">
           <button className="action-btn heart-btn">

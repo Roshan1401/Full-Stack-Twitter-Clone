@@ -21,6 +21,14 @@ createRoot(document.getElementById("root")).render(
         <Route path="/" element={<App />}>
           <Route
             index
+            element={
+              <AuthLayout authentication>
+                <Home />
+              </AuthLayout>
+            }
+          />
+          <Route
+            index
             path="/home"
             element={
               <AuthLayout authentication>

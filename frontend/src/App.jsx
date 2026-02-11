@@ -32,7 +32,7 @@ function App() {
         } else {
           dispatch(authLogout());
 
-          console.log("Logout");
+          // console.log("Logout");
         }
       } catch (error) {
         dispatch(authLogout());

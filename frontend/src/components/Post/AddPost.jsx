@@ -7,14 +7,19 @@ import TxtArea from "../Input/TxtArea.jsx";
 import { FiImage } from "react-icons/fi";
 import "./AddPost.css";
 
-function AddPost({ variant = "inline", onClose }) {
+function AddPost({ variant = "inline", onClose, addNewPost }) {
   const [selectFile, setSelectFile] = useState([]);
 
   const handleFiles = (e) => {
-    const files = Array.from(e.target.files);
+    const files = Array.from(e.target.files).map((file) => ({
+      file,
+      preview: URL.createObjectURL(file),
+    }));
+    // console.log(files);
 
     setSelectFile((prev) => [...prev, ...files]);
     // e.target.value(null)
+    // console.log(selectFile);
   };
 
   const removeFile = (ItemIndex) => {
@@ -25,6 +30,7 @@ function AddPost({ variant = "inline", onClose }) {
     register,
     handleSubmit,
     watch,
+    reset,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -33,11 +39,37 @@ function AddPost({ variant = "inline", onClose }) {
     },
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    // console.log("Form data", data);
+
+    try {
+      const formData = new FormData();
+      formData.append("postContent", data.postContent);
+      selectFile.forEach((f) => {
+        formData.append("files", f.file);
+      });
+
+      const res = await fetch("http://localhost:5000/api/v1/post/", {
+        method: "POST",
+        body: formData,
+        credentials: "include",
+      });
+
+      const result = await res.json();
+
+      if (result.success) {
+        // console.log("Post created successfully", result.data);
+        addNewPost(result.data);
+      }
+
+      reset();
+      setSelectFile([]);
+    } catch (error) {
+      console.error("Error creating post:", error);
+    }
   };
 
-  const content = watch("postContent");
+  const postContent = watch("postContent");
 
   return (
     <form
@@ -59,6 +91,7 @@ function AddPost({ variant = "inline", onClose }) {
           <TxtArea
             {...register("postContent", {
               required: "Post can't be empty",
+              validate: (value) => value.trim() !== "" || "Post can't be empty",
               maxLength: {
                 value: 280,
                 message: "Post is too long",
@@ -69,15 +102,15 @@ function AddPost({ variant = "inline", onClose }) {
           <div className="file-preview-container">
             {selectFile.map((file, index) => (
               <div className="file-previw-item" key={index}>
-                {file.type.startsWith("image/") ? (
+                {file.file.type.startsWith("image/") ? (
                   <img
-                    src={URL.createObjectURL(file)}
+                    src={file.preview}
                     className="file-preview"
                     alt="preview"
                   />
                 ) : file.type.startsWith("video/") ? (
                   <video
-                    src={URL.createObjectURL(file)}
+                    src={file.preview}
                     className="file-preview"
                     controls
                     muted
@@ -94,7 +127,7 @@ function AddPost({ variant = "inline", onClose }) {
           </div>
 
           {errors.postContent && (
-            <p className="error">{errors.postContent.message}nklsglsk</p>
+            <p className="error">{errors.postContent.message}</p>
           )}
 
           <div className="post-options">
@@ -113,7 +146,12 @@ function AddPost({ variant = "inline", onClose }) {
                 })}
               />
             </label>
-            <button type="submit">Post</button>
+            <button
+              type="submit"
+              disabled={!postContent?.trim() && selectFile.length === 0}
+            >
+              Post
+            </button>
           </div>
         </div>
       </div>
