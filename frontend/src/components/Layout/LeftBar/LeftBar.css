@@ -109,8 +109,14 @@ ul li {
 .profile-info {
   display: flex;
   flex-direction: column;
+  text-align: left;
 }
 
 .profile-info :first-child {
   font-weight: bolder;
+  margin-left: 1px;
+}
+
+.profile-info :nth-child(2) {
+  color: rgb(113, 118, 123);
 }

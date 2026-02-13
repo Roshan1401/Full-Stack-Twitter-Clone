@@ -107,11 +107,14 @@ function LeftBar() {
         <button className="profile-btn">
           <div className="profile-container group">
             <div className="profile-img">
-              <Avatar imgUrl={userLogo} />
+              <Avatar imgUrl={user.avatar || userLogo} />
             </div>
-            <div className="profile-info">
-              <div>Roshan</div>
-              <div>@PatilRosha99</div>
+            <div
+              className="profile-info"
+              onClick={() => navigate(`/profile/${username}`)}
+            >
+              <div>{user.name}</div>
+              <div>{user.username}</div>
             </div>
             <OverFlowMenu>
               <button className="" onClick={() => handleLogout()}>
