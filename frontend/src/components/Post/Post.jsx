@@ -5,12 +5,14 @@ import { FaRegHeart, FaRegComment, FaRegBookmark } from "react-icons/fa";
 import "./Post.css";
 import OverFlowMenu from "../common/OverFlowMenu";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function Post({ post }) {
   const { content, images, author } = post;
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef(null);
   const navigate = useNavigate();
+  const user = useSelector((state) => state.auth.userInfo);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -47,15 +49,19 @@ function Post({ post }) {
         <div className="post-header">
           <span
             className="post-name"
-            onClick={() => navigate(`/profile/${author.username}`)}
+            onClick={() =>
+              navigate(`/profile/${author.username || user?.username}`)
+            }
           >
-            {author.name}
+            {author.name || user?.name}
           </span>
           <span
             className="post-username"
-            onClick={() => navigate(`/profile/${author.username}`)}
+            onClick={() =>
+              navigate(`/profile/${author.username || user?.username}`)
+            }
           >
-            {author.username}
+            {author.username || user?.username}
           </span>
           <span className="post-time">· 2h</span>
 
@@ -70,7 +76,7 @@ function Post({ post }) {
 
         {images.length > 0 && (
           <div
-            className={`my-2 mt-5 grid gap-1 ${images.length === 1 ? "grid-cols-1" : "grid-cols-2"} overflow-hidden`}
+            className={`my-2 mt-2 grid gap-1 ${images.length === 1 ? "grid-cols-1" : "grid-cols-2"} overflow-hidden`}
           >
             {images.map((image) => (
               <div

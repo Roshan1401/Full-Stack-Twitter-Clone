@@ -1,18 +1,30 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 function ProfileStats({ onOpen }) {
+  const [scrollBlur, setScrollBlur] = useState(0);
   const userProfile = useSelector((state) => state.profile.userProfile);
   const user = userProfile?.user || {};
   const followers = userProfile?.followers || [];
   const following = userProfile?.following || [];
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const blur = Math.min(window.scrollY / 30, 8);
+      setScrollBlur(blur);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <div className="relative">
-      <div className="h-45 w-full border">
+      <div className="h-45 w-full overflow-hidden border">
         <img
           src="/banner.jpg"
-          className="h-full w-full bg-amber-50 object-cover"
+          className="h-full w-full bg-amber-50 object-cover transition-all duration-100"
+          style={{ filter: `blur(${scrollBlur}px)` }}
           alt=""
         />
       </div>
