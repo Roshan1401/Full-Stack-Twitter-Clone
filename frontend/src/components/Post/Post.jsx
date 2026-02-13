@@ -51,7 +51,12 @@ function Post({ post }) {
           >
             {author.name}
           </span>
-          <span className="post-username">{author.username}</span>
+          <span
+            className="post-username"
+            onClick={() => navigate(`/profile/${author.username}`)}
+          >
+            {author.username}
+          </span>
           <span className="post-time">· 2h</span>
 
           <OverFlowMenu>

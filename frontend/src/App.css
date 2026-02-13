@@ -49,3 +49,17 @@ main {
   top: 0;
   height: 100vh;
 }
+
+.profile-content {
+  animation: profile-fade-in 500ms ease-out both;
+}
+
+@keyframes profile-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
