@@ -65,7 +65,7 @@ function LeftBar() {
       });
       const data = await res.json();
       if (data.success) {
-        console.log("Logout succss ful");
+        console.log("Logout successful");
         dispatch(authLogout());
         navigate("/login");
       }
@@ -107,7 +107,7 @@ function LeftBar() {
         <button className="profile-btn">
           <div className="profile-container group">
             <div className="profile-img">
-              <Avatar imgUrl={userLogo} />
+              <Avatar imgUrl={user?.avatar || userLogo} />
             </div>
             <div
               className="profile-info"

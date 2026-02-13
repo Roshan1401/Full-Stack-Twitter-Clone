@@ -13,6 +13,11 @@ import {
   AddPost,
 } from "./components/index.js";
 import Profile from "./components/pages/Profile.jsx";
+import ProfilePosts from "./components/profile/ProfilePosts.jsx";
+import ProfileReplies from "./components/profile/ProfileReplies.jsx";
+import ProfileHighlights from "./components/profile/ProfileHighlights.jsx";
+import ProfileArticles from "./components/profile/ProfileArticles.jsx";
+import ProfileLikes from "./components/profile/ProfileLikes.jsx";
 
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
@@ -51,7 +56,13 @@ createRoot(document.getElementById("root")).render(
                 <Profile />
               </AuthLayout>
             }
-          />
+          >
+            <Route index element={<ProfilePosts />} />
+            <Route path="replies" element={<ProfileReplies />} />
+            <Route path="highlights" element={<ProfileHighlights />} />
+            <Route path="articles" element={<ProfileArticles />} />
+            <Route path="likes" element={<ProfileLikes />} />
+          </Route>
         </Route>
         <Route
           path="/login"

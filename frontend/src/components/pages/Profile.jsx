@@ -5,7 +5,7 @@ import { useState } from "react";
 import ProfileStats from "../profile/ProfileStats";
 import ProfileTabs from "../profile/ProfileTabs";
 import EditProfile from "../profile/EditProfile";
-import { useParams } from "react-router-dom";
+import { Outlet, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserProfile } from "../../Redux/profile/profileSlice.js";
 import { clearProfile } from "../../Redux/profile/profileSlice.js";
@@ -55,17 +55,7 @@ function Profile() {
       <ProfileHeader />
       <ProfileStats onOpen={() => setShowEditProfile(true)} />
       <ProfileTabs />
-      {userPosts.length === 0 && (
-        <div className="flex min-h-[50vh] flex-col items-center justify-center gap-3">
-          <h2 className="text-xl font-semibold text-gray-500">No posts yet</h2>
-          <p className="text-sm text-gray-500">
-            When you share posts, they will appear here.
-          </p>
-        </div>
-      )}
-      {userPosts.map((post) => (
-        <Post key={post._id} post={post} />
-      ))}
+      <Outlet />
 
       {showEditProfile && (
         <Modal onClose={() => setShowEditProfile(false)}>
