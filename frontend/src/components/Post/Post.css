@@ -30,6 +30,16 @@
   font-size: 1rem;
 }
 
+.post-header .post-name:hover {
+  text-decoration: underline;
+  text-underline-offset: 1px;
+  cursor: pointer;
+}
+.post-header .post-username:hover {
+  /* text-decoration: underline; */
+  cursor: pointer;
+}
+
 .post-header .post-username,
 .post-time {
   color: gray;

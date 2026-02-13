@@ -4,11 +4,13 @@ import userLogo from "../../assets/userLogo1.jpg";
 import { FaRegHeart, FaRegComment, FaRegBookmark } from "react-icons/fa";
 import "./Post.css";
 import OverFlowMenu from "../common/OverFlowMenu";
+import { useNavigate } from "react-router-dom";
 
 function Post({ post }) {
   const { content, images, author } = post;
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -43,7 +45,12 @@ function Post({ post }) {
       </div>
       <div className="post-content">
         <div className="post-header">
-          <span className="post-name">{author.name}</span>
+          <span
+            className="post-name"
+            onClick={() => navigate(`/profile/${author.username}`)}
+          >
+            {author.name}
+          </span>
           <span className="post-username">{author.username}</span>
           <span className="post-time">· 2h</span>
 

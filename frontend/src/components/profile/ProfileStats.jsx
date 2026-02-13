@@ -2,9 +2,10 @@ import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 
 function ProfileStats({ onOpen }) {
-  const user = useSelector((state) => state.auth.userInfo);
-  const followers = useSelector((state) => state.auth.userInfo.followers);
-  const following = useSelector((state) => state.auth.userInfo.following);
+  const userProfile = useSelector((state) => state.profile.userProfile);
+  const user = userProfile?.user || {};
+  const followers = userProfile?.followers || [];
+  const following = userProfile?.following || [];
 
   return (
     <div className="relative">
