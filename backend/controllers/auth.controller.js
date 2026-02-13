@@ -43,7 +43,7 @@ const signUp = asyncHandler(async (req, res) => {
 
   const user = await User.create({
     name,
-    username,
+    username: "@" + username.toLowerCase(),
     email,
     password,
   });

@@ -5,16 +5,13 @@ import { useState } from "react";
 import ProfileStats from "../profile/ProfileStats";
 import ProfileTabs from "../profile/ProfileTabs";
 import EditProfile from "../profile/EditProfile";
-import { useSelector } from "react-redux";
 
 function Profile() {
-  const user = useSelector((state) => state.auth.userInfo);
-
   const [showEditProfile, setShowEditProfile] = useState(false);
   return (
     <div>
-      <ProfileHeader user={user} />
-      <ProfileStats user={user} onOpen={() => setShowEditProfile(true)} />
+      <ProfileHeader />
+      <ProfileStats onOpen={() => setShowEditProfile(true)} />
       <ProfileTabs />
 
       {showEditProfile && (

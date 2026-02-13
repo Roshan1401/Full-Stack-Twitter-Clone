@@ -1,6 +1,8 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
-function ProfileStats({ user, onOpen }) {
+function ProfileStats({ onOpen }) {
+  const user = useSelector((state) => state.auth.userInfo);
   return (
     <div className="relative">
       <div className="h-45 w-full border">
@@ -37,12 +39,12 @@ function ProfileStats({ user, onOpen }) {
             </span>
           </div>
 
-          <p className="text-sm leading-snug">18 | Learning cool stuffs</p>
+          {/* <p className="text-sm leading-snug">18 | Learning cool stuffs</p>
 
           <div className="flex gap-4 text-sm text-[rgb(113,118,123)]">
             <p>Born January</p>
             <p>Joined February</p>
-          </div>
+          </div> */}
 
           <div className="flex gap-6 text-sm">
             <div className="flex gap-1">

@@ -1,8 +1,10 @@
 import React from "react";
 import { ArrowLeft } from "lucide-react";
 import { FiSearch } from "react-icons/fi";
+import { useSelector } from "react-redux";
 
-function ProfileHeader({ user }) {
+function ProfileHeader() {
+  const user = useSelector((state) => state.auth.userInfo);
   return (
     <div className="flex items-center gap-8 border-b border-solid border-[#2f3336] px-4 py-1 text-white backdrop:blur-sm">
       <button className="cursor-pointer rounded-4xl p-2 hover:bg-[rgba(67,67,67,0.7)]">
