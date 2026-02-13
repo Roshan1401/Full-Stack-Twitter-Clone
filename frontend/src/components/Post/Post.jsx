@@ -4,14 +4,13 @@ import userLogo from "../../assets/userLogo1.jpg";
 import { FaRegHeart, FaRegComment, FaRegBookmark } from "react-icons/fa";
 import "./Post.css";
 import OverFlowMenu from "../common/OverFlowMenu";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 function Post({ post }) {
   const { content, images, author } = post;
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef(null);
-  const navigate = useNavigate();
   const user = useSelector((state) => state.auth.userInfo);
 
   useEffect(() => {
@@ -47,22 +46,18 @@ function Post({ post }) {
       </div>
       <div className="post-content">
         <div className="post-header">
-          <span
+          <Link
             className="post-name"
-            onClick={() =>
-              navigate(`/profile/${author.username || user?.username}`)
-            }
+            to={`/profile/${author.username || user?.username}`}
           >
             {author.name || user?.name}
-          </span>
-          <span
+          </Link>
+          <Link
             className="post-username"
-            onClick={() =>
-              navigate(`/profile/${author.username || user?.username}`)
-            }
+            to={`/profile/${author.username || user?.username}`}
           >
             {author.username || user?.username}
-          </span>
+          </Link>
           <span className="post-time">· 2h</span>
 
           <OverFlowMenu>

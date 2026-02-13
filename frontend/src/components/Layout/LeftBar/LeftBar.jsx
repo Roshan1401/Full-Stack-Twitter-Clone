@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import logo from "../../../assets/logo3.png";
 import { MdHome } from "react-icons/md";
 import { FiSearch } from "react-icons/fi";
@@ -88,15 +88,17 @@ function LeftBar() {
         <ul>
           {barItems.map((item) => (
             <li key={item.name}>
-              <div
-                className="item-container"
-                onClick={() => navigate(item.slug)}
+              <NavLink
+                to={item.slug}
+                className={({ isActive }) =>
+                  `item-container${isActive ? " item-container--active" : ""}`
+                }
               >
                 <div className="icon">
                   {item.icon}
                   <span>{item.name}</span>
                 </div>
-              </div>
+              </NavLink>
             </li>
           ))}
         </ul>
@@ -109,13 +111,10 @@ function LeftBar() {
             <div className="profile-img">
               <Avatar imgUrl={user?.avatar || userLogo} />
             </div>
-            <div
-              className="profile-info"
-              onClick={() => navigate(`/profile/${username}`)}
-            >
+            <Link className="profile-info" to={`/profile/${user?.username}`}>
               <div>{user.name}</div>
               <div>{user.username}</div>
-            </div>
+            </Link>
             <OverFlowMenu>
               <button className="" onClick={() => handleLogout()}>
                 Logout
