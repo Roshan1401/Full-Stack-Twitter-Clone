@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Input from "../Input/Input.jsx";
 import userLogo from "../../assets/userLogo1.jpg";
@@ -6,9 +6,12 @@ import Avatar from "../Avatar/Avatar.jsx";
 import TxtArea from "../Input/TxtArea.jsx";
 import { FiImage } from "react-icons/fi";
 import "./AddPost.css";
+import { useDispatch } from "react-redux";
+import { addPost } from "../../Redux/posts/postSlice.js";
 
-function AddPost({ variant = "inline", onClose, addNewPost }) {
+function AddPost({ variant = "inline", onClose }) {
   const [selectFile, setSelectFile] = useState([]);
+  const dispatch = useDispatch();
 
   const handleFiles = (e) => {
     const files = Array.from(e.target.files).map((file) => ({
@@ -59,7 +62,8 @@ function AddPost({ variant = "inline", onClose, addNewPost }) {
 
       if (result.success) {
         // console.log("Post created successfully", result.data);
-        addNewPost(result.data);
+        dispatch(addPost(result.data));
+        onClose && onClose();
       }
 
       reset();

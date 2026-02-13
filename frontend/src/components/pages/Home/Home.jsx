@@ -1,17 +1,14 @@
-import React from "react";
 import Navbar from "../../Layout/Navbar.jsx";
-import RightBar from "../../Layout/RIghtBar/RightBar.jsx";
 import "../Home/Home.css";
 import Post from "../../Post/Post.jsx";
 import AddPost from "../../Post/AddPost.jsx";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setPosts } from "../../../Redux/posts/postSlice.js";
 
 function Home() {
-  const [posts, setPosts] = useState([]);
-
-  const addNewPost = (newPost) => {
-    setPosts((prev) => [newPost, ...prev]);
-  };
+  const posts = useSelector((state) => state.posts.posts);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     fetchPosts();
@@ -30,7 +27,7 @@ function Home() {
       const data = await res.json();
       if (data.success) {
         // console.log(data);
-        setPosts(data.data);
+        dispatch(setPosts(data.data));
       }
     } catch (error) {
       console.error("Error fetching posts:", error);
@@ -44,7 +41,7 @@ function Home() {
           <Navbar />
         </div>
         <div className="posts-container">
-          <AddPost addNewPost={addNewPost} />
+          <AddPost />
           <div className="posts-list">
             {/* Posts will be rendered here */}
             {posts.map((post) => (
