@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ProfileHeader from "../profile/ProfileHeader";
 import Modal from "../Modal/Modal";
 import { useState } from "react";
@@ -8,6 +8,17 @@ import EditProfile from "../profile/EditProfile";
 
 function Profile() {
   const [showEditProfile, setShowEditProfile] = useState(false);
+
+  useEffect(() => {
+    fetchUserPosts();
+  }, []);
+
+  const fetchUserPosts = () => {
+    try {
+    } catch (error) {
+      console.error("Error fetching user posts:", error);
+    }
+  };
   return (
     <div>
       <ProfileHeader />

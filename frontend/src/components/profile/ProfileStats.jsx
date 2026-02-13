@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 
 function ProfileStats({ onOpen }) {
   const user = useSelector((state) => state.auth.userInfo);
+  const followers = useSelector((state) => state.auth.userInfo.followers);
+  const following = useSelector((state) => state.auth.userInfo.following);
+
   return (
     <div className="relative">
       <div className="h-45 w-full border">
@@ -48,12 +51,12 @@ function ProfileStats({ onOpen }) {
 
           <div className="flex gap-6 text-sm">
             <div className="flex gap-1">
-              <span className="font-bold text-white">257</span>
-              <span className="text-[rgb(113,118,123)]">Following</span>
+              <span className="font-bold text-white">{followers.length}</span>
+              <span className="text-[rgb(113,118,123)]">Follwers</span>
             </div>
 
             <div className="flex gap-1">
-              <span className="font-bold text-white">151</span>
+              <span className="font-bold text-white">{following.length}</span>
               <span className="text-[rgb(113,118,123)]">Followers</span>
             </div>
           </div>
