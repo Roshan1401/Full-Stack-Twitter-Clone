@@ -4,17 +4,19 @@ import Profile from "./components/pages/Profile";
 // import Follows from "./components/RIghtBar/FollowComponent/Follows";
 import RightBar from "./components/Layout/RIghtBar/RightBar";
 // import { Login, SignUp, Home } from "./index";
-import { useEffect, useState, useNavigate } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
   logout as authLogout,
   login as authLogin,
 } from "./Redux/auth/authSlice";
 import { Outlet } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function App() {
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -31,17 +33,18 @@ function App() {
           dispatch(authLogin({ userInfo: user }));
         } else {
           dispatch(authLogout());
-
+          navigate("/login");
           // console.log("Logout");
         }
       } catch (error) {
         dispatch(authLogout());
+        navigate("/login");
       } finally {
         setLoading(false);
       }
     };
     checkAuth();
-  }, []);
+  }, [dispatch, navigate]);
 
   return !loading ? (
     <>
@@ -59,7 +62,9 @@ function App() {
         </div>
       </div>
     </>
-  ) : null;
+  ) : (
+    <div className="loading">Loading...</div>
+  );
 }
 
 export default App;

@@ -18,23 +18,16 @@ import ProfileReplies from "./components/profile/ProfileReplies.jsx";
 import ProfileHighlights from "./components/profile/ProfileHighlights.jsx";
 import ProfileArticles from "./components/profile/ProfileArticles.jsx";
 import ProfileLikes from "./components/profile/ProfileLikes.jsx";
+import ScrollToTop from "./components/Scroll/ScrollToTop.jsx";
 
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<App />}>
           <Route
             index
-            element={
-              <AuthLayout authentication>
-                <Home />
-              </AuthLayout>
-            }
-          />
-          <Route
-            index
-            path="/home"
             element={
               <AuthLayout authentication>
                 <Home />

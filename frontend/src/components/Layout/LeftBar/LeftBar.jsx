@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import logo from "../../../assets/logo3.png";
 import { MdHome } from "react-icons/md";
 import { FiSearch } from "react-icons/fi";
@@ -22,7 +22,7 @@ function LeftBar() {
   const barItems = [
     {
       name: "Home",
-      slug: "/home",
+      slug: "/",
       icon: <MdHome />,
     },
     {
@@ -56,6 +56,11 @@ function LeftBar() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const scrollHomeToTop = () => {
+    document.body.scrollTo({ top: 0, behavior: "auto" });
+  };
 
   const handleLogout = async () => {
     try {
@@ -93,6 +98,11 @@ function LeftBar() {
                 className={({ isActive }) =>
                   `item-container${isActive ? " item-container--active" : ""}`
                 }
+                onClick={() => {
+                  if (item.name === "Home" && location.pathname === "/") {
+                    scrollHomeToTop();
+                  }
+                }}
               >
                 <div className="icon">
                   {item.icon}
@@ -112,8 +122,8 @@ function LeftBar() {
               <Avatar imgUrl={user?.avatar || userLogo} />
             </div>
             <Link className="profile-info" to={`/profile/${user?.username}`}>
-              <div>{user.name}</div>
-              <div>{user.username}</div>
+              <div>{user?.name}</div>
+              <div>{user?.username}</div>
             </Link>
             <OverFlowMenu>
               <button className="" onClick={() => handleLogout()}>
