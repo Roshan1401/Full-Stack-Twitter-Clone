@@ -41,4 +41,35 @@ const getUserProfile = asyncHandler(async (req, res) => {
   );
 });
 
-export { getUser, getUserProfile };
+const getRandomUsers = asyncHandler(async (req, res) => {
+  const user = req.user;
+
+  const alreadyFollowingIds = user.following.map((id) => id) || [];
+  console.log("alraedy Following", alreadyFollowingIds);
+
+  const users = await User.aggregate([
+    {
+      $match: {
+        _id: { $ne: user?._id, $nin: alreadyFollowingIds },
+      },
+    },
+    { $sample: { size: 3 } },
+    {
+      $project: {
+        name: 1,
+        username: 1,
+        avatar: 1,
+      },
+    },
+  ]);
+
+  console.log(users);
+  console.log(typeof user._id);
+  console.log(user._id);
+
+  res
+    .status(200)
+    .json(new ApiResponse(200, "Random users fetched successfully.", users));
+});
+
+export { getUser, getUserProfile, getRandomUsers };
