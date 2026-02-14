@@ -21,3 +21,16 @@
   border-left: 1px solid #2f3336;
   border-right: 1px solid #2f3336;
 }
+
+.posts-list {
+  animation: fadeIn 280ms ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
