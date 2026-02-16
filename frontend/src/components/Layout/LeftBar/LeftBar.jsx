@@ -116,7 +116,7 @@ function LeftBar() {
           <button onClick={() => setShowAddPost(true)}>Post</button>
         </div>
 
-        <button className="profile-btn">
+        <div className="profile-btn">
           <div className="profile-container group">
             <div className="profile-img">
               <Avatar imgUrl={user?.avatar || userLogo} />
@@ -129,9 +129,9 @@ function LeftBar() {
               <button className="" onClick={() => handleLogout()}>
                 Logout
               </button>
-            </OverFlowMenu>
+            </OverFlowMenu>{" "}
           </div>
-        </button>
+        </div>
       </nav>
 
       {showAddPost && (

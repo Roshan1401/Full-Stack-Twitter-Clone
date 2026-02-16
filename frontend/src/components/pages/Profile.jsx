@@ -21,6 +21,7 @@ function Profile() {
   const userProfile = useSelector((state) => state.profile.userProfile);
   const userPosts = userProfile?.posts || [];
   useEffect(() => {
+    setLoading(true);
     dispatch(clearProfile());
     fetchUserProfile();
   }, [username, dispatch]);
