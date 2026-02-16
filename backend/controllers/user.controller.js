@@ -45,7 +45,6 @@ const getRandomUsers = asyncHandler(async (req, res) => {
   const user = req.user;
 
   const alreadyFollowingIds = user.following.map((id) => id) || [];
-  console.log("alraedy Following", alreadyFollowingIds);
 
   const users = await User.aggregate([
     {
@@ -62,10 +61,6 @@ const getRandomUsers = asyncHandler(async (req, res) => {
       },
     },
   ]);
-
-  console.log(users);
-  console.log(typeof user._id);
-  console.log(user._id);
 
   res
     .status(200)
