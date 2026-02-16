@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setUserProfile } from "../../Redux/profile/profileSlice.js";
 import { clearProfile } from "../../Redux/profile/profileSlice.js";
 import Post from "../Post/Post.jsx";
+import axios from "axios";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 
@@ -28,18 +29,14 @@ function Profile() {
 
   const fetchUserProfile = async () => {
     try {
-      const res = await fetch(
+      const res = await axios.get(
         `http://localhost:5000/api/v1/user/profile/${username}`,
         {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
+          withCredentials: true,
         },
       );
 
-      const data = await res.json();
+      const data = res.data;
 
       if (data.success) {
         // console.log(data);

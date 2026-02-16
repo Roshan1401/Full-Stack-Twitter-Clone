@@ -3,21 +3,18 @@ import { FiSearch } from "react-icons/fi";
 import userLogo from "../../../assets/userLogo1.jpg";
 import Follows from "./FollowComponent/Follows";
 import "./RightBar.css";
+import axios from "axios";
 
 function RightBar() {
   const [profiles, setProfiles] = useState([]);
 
   const fetchRandomUsers = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/v1/user/random", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
+      const res = await axios.get("http://localhost:5000/api/v1/user/random", {
+        withCredentials: true,
       });
 
-      const data = await res.json();
+      const data = res.data;
       if (data.success) {
         setProfiles(data.data);
       }

@@ -5,6 +5,7 @@ import AddPost from "../../Post/AddPost.jsx";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "../../../Redux/posts/postSlice.js";
+import axios from "axios";
 
 function Home() {
   const [loading, setLoading] = useState(true);
@@ -17,15 +18,14 @@ function Home() {
 
   const fetchPosts = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/v1/post/getAllPosts", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
+      const res = await axios.get(
+        "http://localhost:5000/api/v1/post/getAllPosts",
+        {
+          withCredentials: true,
         },
-        credentials: "include",
-      });
+      );
 
-      const data = await res.json();
+      const data = res.data;
       if (data.success) {
         // console.log(data);
         dispatch(setPosts(data.data));

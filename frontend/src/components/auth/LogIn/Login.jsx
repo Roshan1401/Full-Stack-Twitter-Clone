@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login as authLogin } from "../../../Redux/auth/authSlice.js";
+import axios from "axios";
 
 function Login() {
   const { register, handleSubmit } = useForm();
@@ -14,16 +15,15 @@ function Login() {
   const dispatch = useDispatch();
 
   const submit = async (data) => {
-    const res = await fetch("http://localhost:5000/api/v1/auth/login", {
-      method: "post",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
+    const res = await axios.post(
+      "http://localhost:5000/api/v1/auth/login",
+      data,
+      {
+        withCredentials: true,
       },
-      body: JSON.stringify(data),
-    });
+    );
 
-    const responseData = await res.json();
+    const responseData = res.data;
 
     if (responseData.success) {
       dispatch(authLogin({ userInfo: responseData.data.user }));

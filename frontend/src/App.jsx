@@ -12,6 +12,7 @@ import {
 } from "./Redux/auth/authSlice";
 import { Outlet } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -21,11 +22,14 @@ function App() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/v1/user/getUser", {
-          credentials: "include",
-        });
+        const res = await axios.get(
+          "http://localhost:5000/api/v1/user/getUser",
+          {
+            withCredentials: true,
+          },
+        );
 
-        const data = await res.json();
+        const data = res.data;
         const user = data.data;
         if (data.success) {
           console.log(data);

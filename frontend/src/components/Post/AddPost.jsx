@@ -8,6 +8,7 @@ import { FiImage } from "react-icons/fi";
 import "./AddPost.css";
 import { useDispatch } from "react-redux";
 import { addPost } from "../../Redux/posts/postSlice.js";
+import axios from "axios";
 
 function AddPost({ variant = "inline", onClose }) {
   const [selectFile, setSelectFile] = useState([]);
@@ -53,13 +54,15 @@ function AddPost({ variant = "inline", onClose }) {
         formData.append("files", f.file);
       });
 
-      const res = await fetch("http://localhost:5000/api/v1/post/", {
-        method: "POST",
-        body: formData,
-        credentials: "include",
-      });
+      const res = await axios.post(
+        "http://localhost:5000/api/v1/post/",
+        formData,
+        {
+          withCredentials: true,
+        },
+      );
 
-      const result = await res.json();
+      const result = res.data;
 
       if (result.success) {
         // console.log("Post created successfully", result.data);
