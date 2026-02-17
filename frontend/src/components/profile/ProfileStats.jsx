@@ -1,18 +1,58 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
+import axios from "axios";
+import { setUserProfile } from "../../Redux/profile/profileSlice";
 
 function ProfileStats({ onOpen }) {
+  const dispatch = useDispatch();
   const [scrollBlur, setScrollBlur] = useState(0);
   const userProfile = useSelector((state) => state.profile.userProfile);
   const user = userProfile?.user || {};
   const followers = userProfile?.followers || [];
   const following = userProfile?.following || [];
-
+  const currentUser = useSelector((state) => state.auth.userInfo);
   const currentUsername = useSelector((state) => state.auth.userInfo?.username);
+  const checkedUserFollowing = followers.includes(currentUser?._id);
 
   const [showEditProfile, setShowEditProfile] = useState(true);
+  const [isHoveringFollowing, setIsHoveringFollowing] = useState(false);
   const paramsUsername = useParams().username;
+
+  const refetchProfileData = async () => {
+    try {
+      const res = await axios.get(
+        `http://localhost:5000/api/v1/user/profile/${paramsUsername}`,
+        {
+          withCredentials: true,
+        },
+      );
+      if (res.data.success) {
+        dispatch(setUserProfile(res.data.data));
+      }
+    } catch (error) {
+      console.error("Error refetching profile data:", error);
+    }
+  };
+
+  const handleFollow = async (state) => {
+    try {
+      const res = await axios.post(
+        `http://localhost:5000/api/v1/${state}/${user._id}`,
+        {},
+        {
+          withCredentials: true,
+        },
+      );
+
+      const data = res.data;
+      if (data.success) {
+        await refetchProfileData();
+      }
+    } catch (error) {
+      console.error("Error fetching follow data:", error);
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,15 +65,14 @@ function ProfileStats({ onOpen }) {
   }, []);
 
   useEffect(() => {
-    console.log(paramsUsername);
-
     if (paramsUsername === currentUsername) {
       setShowEditProfile(true);
     } else {
       setShowEditProfile(false);
     }
-    console.log("Show Edit Profile:", showEditProfile);
   }, [paramsUsername, currentUsername]);
+
+  useEffect(() => {}, [user, followers, following]);
 
   return (
     <div className="relative">
@@ -62,10 +101,19 @@ function ProfileStats({ onOpen }) {
             >
               Edit Profile
             </button>
+          ) : checkedUserFollowing ? (
+            <button
+              className="text-md cursor-pointer rounded-3xl border border-solid border-[rgb(83,100,113)] bg-black px-5 py-1 font-bold text-white duration-75 hover:border-red-700 hover:bg-[rgba(255,1,1,0.12)] hover:text-red-500"
+              onClick={() => handleFollow("unfollow")}
+              onMouseEnter={() => setIsHoveringFollowing(true)}
+              onMouseLeave={() => setIsHoveringFollowing(false)}
+            >
+              {isHoveringFollowing ? "Unfollow" : "Following"}
+            </button>
           ) : (
             <button
-              className="text-md cursor-pointer rounded-3xl border border-solid border-[rgb(83,100,113)] bg-white px-4 py-2 font-bold text-black duration-75 hover:bg-[rgba(255,255,255,0.7)]"
-              onClick={onOpen}
+              className="text-md cursor-pointer rounded-3xl border border-solid border-[rgb(83,100,113)] bg-white px-4 py-2 font-bold text-black duration-75 hover:bg-[rgba(245,245,245,0.8)]"
+              onClick={() => handleFollow("follow")}
             >
               Follow
             </button>
@@ -90,13 +138,17 @@ function ProfileStats({ onOpen }) {
 
           <div className="flex gap-6 text-sm">
             <div className="flex gap-1">
-              <span className="font-bold text-white">{followers.length}</span>
-              <span className="text-[rgb(113,118,123)]">Follwers</span>
+              <span className="text-md font-bold text-white">
+                {following.length}
+              </span>
+              <span className="text-[rgb(113,118,123)]">Following</span>
             </div>
 
             <div className="flex gap-1">
-              <span className="font-bold text-white">{following.length}</span>
-              <span className="text-[rgb(113,118,123)]">Following</span>
+              <span className="text-md font-bold text-white">
+                {followers.length}
+              </span>
+              <span className="text-[rgb(113,118,123)]">Follwers</span>
             </div>
           </div>
         </div>

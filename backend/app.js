@@ -28,7 +28,7 @@ import followRouter from "./routes/follow.route.js";
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/post", postRouter);
 app.use("/api/v1/user", userRouter);
-app.use("/api/v1/follow", followRouter);
+app.use("/api/v1/", followRouter);
 
 // Error Handling Middleware
 app.use(errorHandler);

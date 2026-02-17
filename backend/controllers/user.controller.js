@@ -35,8 +35,8 @@ const getUserProfile = asyncHandler(async (req, res) => {
       user,
       posts: userPosts,
       postCount: userPosts.length,
-      followers: user.followers.length,
-      following: user.following.length,
+      followers: user.followers,
+      following: user.following,
     }),
   );
 });
