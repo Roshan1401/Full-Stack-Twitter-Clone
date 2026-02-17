@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  status: false,
+  status: null,
   userInfo: null,
 };
 
@@ -14,7 +14,7 @@ const authSlice = createSlice({
       state.userInfo = action.payload.userInfo;
     },
     logout: (state, action) => {
-      console.log("Logout inside");
+      // console.log("Logout inside");
 
       state.status = false;
       state.userInfo = null;
