@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
 function ProfileStats({ onOpen }) {
   const [scrollBlur, setScrollBlur] = useState(0);
@@ -7,6 +8,11 @@ function ProfileStats({ onOpen }) {
   const user = userProfile?.user || {};
   const followers = userProfile?.followers || [];
   const following = userProfile?.following || [];
+
+  const currentUsername = useSelector((state) => state.auth.userInfo?.username);
+
+  const [showEditProfile, setShowEditProfile] = useState(true);
+  const paramsUsername = useParams().username;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,6 +23,17 @@ function ProfileStats({ onOpen }) {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    console.log(paramsUsername);
+
+    if (paramsUsername === currentUsername) {
+      setShowEditProfile(true);
+    } else {
+      setShowEditProfile(false);
+    }
+    console.log("Show Edit Profile:", showEditProfile);
+  }, [paramsUsername, currentUsername]);
 
   return (
     <div className="relative">
@@ -38,12 +55,21 @@ function ProfileStats({ onOpen }) {
       </div>
       <div className="mb-2 p-4">
         <div className="mb-10 ml-auto flex justify-end">
-          <button
-            className="cursor-pointer rounded-2xl border border-solid border-[rgb(83,100,113)] px-4 py-1 text-sm font-semibold text-white duration-75 hover:bg-[rgba(67,67,67,0.4)]"
-            onClick={onOpen}
-          >
-            Edit Profile
-          </button>
+          {showEditProfile ? (
+            <button
+              className="text-md cursor-pointer rounded-4xl border border-solid border-[rgb(83,100,113)] px-4 py-2 font-semibold text-white duration-75 hover:bg-[rgba(67,67,67,0.4)]"
+              onClick={onOpen}
+            >
+              Edit Profile
+            </button>
+          ) : (
+            <button
+              className="text-md cursor-pointer rounded-3xl border border-solid border-[rgb(83,100,113)] bg-white px-4 py-2 font-bold text-black duration-75 hover:bg-[rgba(255,255,255,0.7)]"
+              onClick={onOpen}
+            >
+              Follow
+            </button>
+          )}
         </div>
 
         <div className="space-y-3 text-white">
@@ -70,7 +96,7 @@ function ProfileStats({ onOpen }) {
 
             <div className="flex gap-1">
               <span className="font-bold text-white">{following.length}</span>
-              <span className="text-[rgb(113,118,123)]">Followers</span>
+              <span className="text-[rgb(113,118,123)]">Following</span>
             </div>
           </div>
         </div>

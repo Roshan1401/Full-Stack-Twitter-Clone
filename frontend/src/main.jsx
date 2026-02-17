@@ -25,7 +25,14 @@ createRoot(document.getElementById("root")).render(
     <BrowserRouter>
       <ScrollToTop />
       <Routes>
-        <Route path="/" element={<App />}>
+        <Route
+          path="/"
+          element={
+            <AuthLayout authentication>
+              <App />
+            </AuthLayout>
+          }
+        >
           <Route
             index
             element={
