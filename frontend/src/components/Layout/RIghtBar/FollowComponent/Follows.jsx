@@ -1,21 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Follows.css";
 import Avatar from "../../../Avatar/Avatar.jsx";
 import { Link } from "react-router-dom";
-function Follows({ imgUrl, name, username }) {
+import userLogo from "../../../../assets/userLogo1.jpg";
+
+function Follows({ userData, handleFollow, isFollowing = false }) {
+  const [isHovering, setIsHovering] = useState(false);
+
   return (
     <div className="container">
-      <Avatar imgUrl={imgUrl} />
+      <Avatar imgUrl={userData?.imgUrl || userLogo} />
       <div className="info">
-        <Link className="name" to={`/profile/${username}`}>
-          {name}
+        <Link className="name" to={`/profile/${userData.username}`}>
+          {userData.name}
         </Link>
-        <Link className="username" to={`/profile/${username}`}>
-          {username}
+        <Link className="username" to={`/profile/${userData.username}`}>
+          @{userData.username}
         </Link>
       </div>
       <div className="follow-btn">
-        <button>Follow</button>
+        {isFollowing ? (
+          <button 
+            className="following-btn"
+            onClick={() => handleFollow("unfollow", userData._id)}
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
+          >
+            {isHovering ? "Unfollow" : "Following"}
+          </button>
+        ) : (
+          <button onClick={() => handleFollow("follow", userData._id)}>
+            Follow
+          </button>
+        )}
       </div>
     </div>
   );

@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { FiSearch } from "react-icons/fi";
-import userLogo from "../../../assets/userLogo1.jpg";
 import Follows from "./FollowComponent/Follows";
 import "./RightBar.css";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { setUserProfile } from "../../../Redux/profile/profileSlice";
 
 function RightBar() {
+  const dispatch = useDispatch();
+  const params = useParams();
+  const paramsUsername = params.username;
+  const currentUser = useSelector((state) => state.auth.userInfo);
   const [profiles, setProfiles] = useState([]);
 
   const fetchRandomUsers = async () => {
@@ -20,6 +26,59 @@ function RightBar() {
       }
     } catch (error) {
       console.error("Error fetching random users:", error);
+    }
+  };
+
+  const refetchProfileData = async () => {
+    if (paramsUsername) {
+      try {
+        const res = await axios.get(
+          `http://localhost:5000/api/v1/user/profile/${paramsUsername}`,
+          {
+            withCredentials: true,
+          },
+        );
+        if (res.data.success) {
+          dispatch(setUserProfile(res.data.data));
+        }
+      } catch (error) {
+        console.error("Error refetching profile data:", error);
+      }
+    }
+  };
+
+  const handleFollow = async (action, userId) => {
+    try {
+      const res = await axios.post(
+        `http://localhost:5000/api/v1/${action}/${userId}`,
+        {},
+        {
+          withCredentials: true,
+        },
+      );
+
+      const data = res.data;
+      if (data.success) {
+        setProfiles((prevProfiles) =>
+          prevProfiles.map((profile) =>
+            profile._id === userId
+              ? {
+                  ...profile,
+                  followers:
+                    action === "follow"
+                      ? [...(profile.followers || []), currentUser._id]
+                      : (profile.followers || []).filter(
+                          (id) => id !== currentUser._id,
+                        ),
+                }
+              : profile,
+          ),
+        );
+
+        await refetchProfileData();
+      }
+    } catch (error) {
+      console.error("Error fetching follow data:", error);
     }
   };
 
@@ -40,9 +99,9 @@ function RightBar() {
             {profiles.map((profile) => (
               <li key={profile.username}>
                 <Follows
-                  imgUrl={profile?.imgUrl || userLogo}
-                  name={profile?.name}
-                  username={profile?.username}
+                  userData={profile}
+                  handleFollow={handleFollow}
+                  isFollowing={profile.followers?.includes(currentUser?._id)}
                 />
               </li>
             ))}
