@@ -13,6 +13,17 @@ function Post({ post }) {
   const menuRef = useRef(null);
   const user = useSelector((state) => state.auth.userInfo);
 
+  const timeAgo = (timestamp) => {
+    const now = new Date();
+    const postDate = new Date(timestamp);
+    const diff = Math.floor((now - postDate) / 1000);
+
+    if (diff < 60) return `${diff}s ago`;
+    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+    if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+    return `${Math.floor(diff / 86400)}d ago`;
+  };
+
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
@@ -58,7 +69,7 @@ function Post({ post }) {
           >
             {author.username || user?.username}
           </Link>
-          <span className="post-time">· 2h</span>
+          <span className="post-time">· {timeAgo(post.createdAt)}</span>
 
           <OverFlowMenu>
             <button onClick={handleEdit}>Edit</button>

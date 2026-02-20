@@ -127,7 +127,7 @@ function LeftBar() {
             </div>
             <Link className="profile-info" to={`/profile/${user?.username}`}>
               <div>{user?.name}</div>
-              <div>{user?.username}</div>
+              <div>@{user?.username}</div>
             </Link>
             <OverFlowMenu>
               <button className="" onClick={() => handleLogout()}>
