@@ -19,68 +19,51 @@ import ProfileHighlights from "./components/profile/ProfileHighlights.jsx";
 import ProfileArticles from "./components/profile/ProfileArticles.jsx";
 import ProfileLikes from "./components/profile/ProfileLikes.jsx";
 import ScrollToTop from "./components/Scroll/ScrollToTop.jsx";
+import AuthInitializer from "./components/auth/AuthInitializer.jsx";
 
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <BrowserRouter>
-      <ScrollToTop />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <AuthLayout authentication>
-              <App />
-            </AuthLayout>
-          }
-        >
+      <AuthInitializer>
+        <ScrollToTop />
+        <Routes>
           <Route
-            index
+            path="/"
             element={
               <AuthLayout authentication>
-                <Home />
-              </AuthLayout>
-            }
-          />
-          <Route
-            path="/add-post"
-            element={
-              <AuthLayout authentication>
-                <AddPost />
-              </AuthLayout>
-            }
-          />
-          <Route
-            path="/profile/:username"
-            element={
-              <AuthLayout authentication>
-                <Profile />
+                <App />
               </AuthLayout>
             }
           >
-            <Route index element={<ProfilePosts />} />
-            <Route path="replies" element={<ProfileReplies />} />
-            <Route path="highlights" element={<ProfileHighlights />} />
-            <Route path="articles" element={<ProfileArticles />} />
-            <Route path="likes" element={<ProfileLikes />} />
+            <Route index element={<Home />} />
+            <Route path="/add-post" element={<AddPost />} />
+            <Route path="/profile/:username" element={<Profile />}>
+              <Route index element={<ProfilePosts />} />
+              <Route path="replies" element={<ProfileReplies />} />
+              <Route path="highlights" element={<ProfileHighlights />} />
+              <Route path="articles" element={<ProfileArticles />} />
+              <Route path="likes" element={<ProfileLikes />} />
+            </Route>
           </Route>
-        </Route>
-        <Route
-          path="/login"
-          element={
-            <AuthLayout authentication={false}>
-              <Login />
-            </AuthLayout>
-          }
-        />
-        <Route
-          path="/signup"
-          element={
-            <AuthLayout authentication={false}>
-              <SignUp />
-            </AuthLayout>
-          }
-        />
-      </Routes>
+
+          <Route
+            path="/login"
+            element={
+              <AuthLayout authentication={false}>
+                <Login />
+              </AuthLayout>
+            }
+          />
+          <Route
+            path="/signup"
+            element={
+              <AuthLayout authentication={false}>
+                <SignUp />
+              </AuthLayout>
+            }
+          />
+        </Routes>
+      </AuthInitializer>
     </BrowserRouter>
   </Provider>,
 );
