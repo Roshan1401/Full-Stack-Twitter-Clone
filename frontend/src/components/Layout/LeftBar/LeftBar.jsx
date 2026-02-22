@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
-import logo from "../../../assets/logo3.png";
+import logo from "../../../assets/logo.svg";
 import { MdHome } from "react-icons/md";
 import { FiSearch } from "react-icons/fi";
 import { FiBookmark, FiSettings, FiLogOut } from "react-icons/fi";

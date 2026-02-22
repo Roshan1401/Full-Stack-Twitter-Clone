@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 function Post({ post }) {
-  const { content, images, author } = post;
+  const { content, files, author } = post;
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef(null);
   const user = useSelector((state) => state.auth.userInfo);
@@ -67,7 +67,7 @@ function Post({ post }) {
             className="post-username"
             to={`/profile/${author.username || user?.username}`}
           >
-            {author.username || user?.username}
+            @{author.username || user?.username}
           </Link>
           <span className="post-time">· {timeAgo(post.createdAt)}</span>
 
@@ -80,21 +80,30 @@ function Post({ post }) {
         </div>
         <div className="post-text">{content}</div>
 
-        {images.length > 0 && (
+        {files.length > 0 && (
           <div
-            className={`my-2 mt-2 grid gap-1 ${images.length === 1 ? "grid-cols-1" : "grid-cols-2"} overflow-hidden`}
+            className={`my-2 mt-2 grid gap-1 ${files.length === 1 ? "grid-cols-1" : "grid-cols-2"} overflow-hidden`}
           >
-            {images.map((image) => (
+            {files.map((file) => (
               <div
-                key={image.id}
-                className="overflow-hidden rounded-lg border border-gray-500"
+                key={file.publicId}
+                className="overflow-hidden rounded-2xl border border-neutral-800"
               >
-                <img
-                  key={image.id}
-                  src={image.url}
-                  className="h-full w-full rounded-lg object-cover"
-                  alt={`Post Image ${image.id}`}
-                />
+                {file.type.startsWith("image/") ? (
+                  <img
+                    key={file.publicId}
+                    src={file.url}
+                    className="h-full w-full rounded-2xl object-cover"
+                    alt={`Post Image ${file.publicId}`}
+                  />
+                ) : file.type.startsWith("video/") ? (
+                  <video
+                    key={file.publicId}
+                    src={file.url}
+                    className="h-full w-full rounded-2xl object-cover"
+                    controls
+                  />
+                ) : null}
               </div>
             ))}
           </div>

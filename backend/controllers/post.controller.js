@@ -16,23 +16,26 @@ const addPost = asyncHandler(async (req, res) => {
     throw new ApiError(401, "Unauthorized! Please login to continue.");
   }
 
-  const fileImages = req.files || [];
+  const f = req.files || [];
 
-  const uploadedImages = [];
+  const uploadedFiles = [];
 
-  for (const file of fileImages) {
-    const uploadedImage = await uploadOnCloudinary(file.path);
-    if (uploadedImage) {
-      uploadedImages.push({
-        url: uploadedImage.secure_url,
-        publicId: uploadedImage.public_id,
+  for (const file of f) {
+    const uploadedFile = await uploadOnCloudinary(file.path);
+    if (uploadedFile) {
+      console.log(file.mimetype);
+
+      uploadedFiles.push({
+        url: uploadedFile.secure_url,
+        publicId: uploadedFile.public_id,
+        type: file.mimetype,
       });
     }
   }
 
   const newPost = await Post.create({
     content: postContent,
-    images: uploadedImages,
+    files: uploadedFiles,
     author: req.user?._id,
   }).then((post) => post.populate("author", "name username avatar"));
 

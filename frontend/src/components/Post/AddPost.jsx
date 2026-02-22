@@ -117,7 +117,7 @@ function AddPost({ variant = "inline", onClose }) {
                     className="file-preview"
                     alt="preview"
                   />
-                ) : file.type.startsWith("video/") ? (
+                ) : file.file.type.startsWith("video/") ? (
                   <video
                     src={file.preview}
                     className="file-preview"

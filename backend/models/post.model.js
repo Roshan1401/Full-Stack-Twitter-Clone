@@ -6,12 +6,15 @@ const postSchema = new Schema(
       type: String,
       required: true,
     },
-    images: [
+    files: [
       {
         url: {
           type: String,
         },
         publicId: {
+          type: String,
+        },
+        type: {
           type: String,
         },
       },
