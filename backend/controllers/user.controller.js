@@ -3,42 +3,44 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { Post } from "../models/post.model.js";
+import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 const EditProfile = asyncHandler(async (req, res) => {
   const { name, bio } = req.body;
-  const avtarFile = req.files?.avatar;
-  const bannerFile = req.files?.banner;
+  const avatarFile = req.files?.avatar?.[0];
+  const bannerFile = req.files?.banner?.[0];
+  console.log(avatarFile, bannerFile);
 
-  if (!name && !bio && !avtarFile && !bannerFile) {
+  if (!name && !bio && !avatarFile && !bannerFile) {
     throw new ApiError(
       400,
       "Please provide at least one field to update your profile.",
     );
   }
 
-  const uploadedAvatar = avtarFile
-    ? await uploadToCloudinary(avtarFile, "avatars")
+  const uploadedAvatar = avatarFile
+    ? await uploadOnCloudinary(avatarFile.path, "avatars")
     : null;
 
   const uploadedBanner = bannerFile
-    ? await uploadToCloudinary(bannerFile, "banners")
+    ? await uploadOnCloudinary(bannerFile.path, "banners")
     : null;
 
-  const updatedUser = User.findByIdAndUpdate(req.user._id, {
+  console.log(uploadedAvatar);
+
+  const updatedUser = await User.findByIdAndUpdate(req.user._id, {
     name: name || req.user.name,
     bio: bio || req.user.bio,
     avatar: uploadedAvatar
       ? {
           url: uploadedAvatar.secure_url,
           publicId: uploadedAvatar.public_id,
-          type: uploadedAvatar.mimetype,
         }
       : req.user.avatar,
     banner: uploadedBanner
       ? {
           url: uploadedBanner.secure_url,
           publicId: uploadedBanner.public_id,
-          type: uploadedBanner.mimetype,
         }
       : req.user.banner,
   });
