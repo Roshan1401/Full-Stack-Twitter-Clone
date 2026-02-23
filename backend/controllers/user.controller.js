@@ -9,7 +9,6 @@ const EditProfile = asyncHandler(async (req, res) => {
   const { name, bio } = req.body;
   const avatarFile = req.files?.avatar?.[0];
   const bannerFile = req.files?.banner?.[0];
-  console.log(avatarFile, bannerFile);
 
   if (!name && !bio && !avatarFile && !bannerFile) {
     throw new ApiError(
@@ -25,8 +24,6 @@ const EditProfile = asyncHandler(async (req, res) => {
   const uploadedBanner = bannerFile
     ? await uploadOnCloudinary(bannerFile.path, "banners")
     : null;
-
-  console.log(uploadedAvatar);
 
   const updatedUser = await User.findByIdAndUpdate(req.user._id, {
     name: name || req.user.name,
