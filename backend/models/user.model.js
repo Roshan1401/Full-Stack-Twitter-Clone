@@ -34,6 +34,32 @@ const userSchema = new Schema(
         ref: "User",
       },
     ],
+    avatar: {
+      url: {
+        type: String,
+      },
+      publicId: {
+        type: String,
+      },
+      type: {
+        type: String,
+      },
+    },
+    banner: {
+      url: {
+        type: String,
+      },
+      publicId: {
+        type: String,
+      },
+      type: {
+        type: String,
+      },
+    },
+    bio: {
+      type: String,
+      default: "Lear, Build, Sleep Repeat",
+    },
     refreshToken: {
       type: String,
     },
