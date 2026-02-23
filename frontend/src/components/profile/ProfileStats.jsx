@@ -125,30 +125,36 @@ function ProfileStats({ onOpen }) {
             <h1 className="m-0 text-xl font-bold">{user.name}</h1>
 
             <span className="text-sm text-[rgb(113,118,123)]">
-              {user.username}
+              @{user.username}
             </span>
           </div>
 
-          {/* <p className="text-sm leading-snug">18 | Learning cool stuffs</p>
+          <p className="text-md font-sans text-[#E7E9EA]">
+            Learn , Build , Sleep Repeat
+          </p>
 
-          <div className="flex gap-4 text-sm text-[rgb(113,118,123)]">
+          {/* <div className="flex gap-4 text-sm text-[rgb(113,118,123)]">
             <p>Born January</p>
             <p>Joined February</p>
           </div> */}
 
           <div className="flex gap-6 text-sm">
-            <div className="flex gap-1">
-              <span className="text-md font-bold text-white">
+            <div className="flex items-center gap-1">
+              <span className="text-[17px] font-bold text-white">
                 {following.length}
               </span>
-              <span className="text-[rgb(113,118,123)]">Following</span>
+              <span className="text-[16px] text-[rgb(113,118,123)]">
+                Following
+              </span>
             </div>
 
-            <div className="flex gap-1">
-              <span className="text-md font-bold text-white">
+            <div className="flex items-center gap-1">
+              <span className="text-[17px] font-bold text-white">
                 {followers.length}
               </span>
-              <span className="text-[rgb(113,118,123)]">Follwers</span>
+              <span className="text-[16px] text-[rgb(113,118,123)]">
+                Followers
+              </span>
             </div>
           </div>
         </div>
