@@ -123,7 +123,7 @@ function LeftBar() {
         <div className="profile-btn">
           <div className="profile-container group">
             <div className="profile-img">
-              <Avatar imgUrl={user?.avatar || userLogo} />
+              <Avatar imgUrl={userLogo} />
             </div>
             <Link className="profile-info" to={`/profile/${user?.username}`}>
               <div>{user?.name}</div>
