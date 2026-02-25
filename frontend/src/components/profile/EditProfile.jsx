@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserProfile } from "../../Redux/profile/profileSlice";
+import { setUserInfo } from "../../Redux/auth/authSlice";
 
 function EditProfile({ onClose }) {
   const [loading, setLoading] = useState(false);
@@ -14,16 +15,17 @@ function EditProfile({ onClose }) {
     avatar: null,
     banner: null,
   });
+  const currentUser = useSelector((state) => state.auth.userInfo);
 
-  const [avatar, setAvatar] = useState(
-    useSelector((state) => state.auth.userInfo?.avatar),
-  );
-  const [banner, setBanner] = useState(
-    useSelector((state) => state.auth.userInfo?.banner),
-  );
+  const [avatar, setAvatar] = useState(currentUser?.avatar || "/userLogo1.jpg");
+  const [banner, setBanner] = useState(currentUser?.banner || "/banner.jpg");
+
+  useEffect(() => {
+    setAvatar(currentUser?.avatar || "/userLogo1.jpg");
+    setBanner(currentUser?.banner || "/banner.jpg");
+  }, [currentUser]);
 
   const dispatch = useDispatch();
-  const currentUser = useSelector((state) => state.auth.userInfo);
   const username = currentUser?.username;
   const handleFileChange = (e, type) => {
     const file = e.target.files[0];
@@ -55,6 +57,7 @@ function EditProfile({ onClose }) {
       if (data.success) {
         // console.log(data);
         dispatch(setUserProfile(data.data));
+        dispatch(setUserInfo(data.data.user));
       }
     } catch (error) {
       console.error("Error fetching user profile:", error);
@@ -120,8 +123,8 @@ function EditProfile({ onClose }) {
             <img
               src={
                 selectedFile.banner
-                  ? selectedFile.banner.preview
-                  : banner.url || "/banner.jpg"
+                  ? selectedFile?.banner?.preview
+                  : banner?.url || "/banner.jpg"
               }
               className="h-full w-full object-cover blur-[2px]"
               alt=""
@@ -160,8 +163,8 @@ function EditProfile({ onClose }) {
             <img
               src={
                 selectedFile.avatar
-                  ? selectedFile.avatar.preview
-                  : avatar.url || "/userLogo1.jpg"
+                  ? selectedFile?.avatar?.preview
+                  : avatar?.url || "/userLogo1.jpg"
               }
               className="opacity-0.1 h-full w-full object-cover"
               alt="Profile"
