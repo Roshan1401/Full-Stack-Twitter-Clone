@@ -6,7 +6,6 @@ import { FiSearch } from "react-icons/fi";
 import { FiBookmark, FiSettings, FiLogOut } from "react-icons/fi";
 import { IoNotificationsOutline } from "react-icons/io5";
 import { CgProfile } from "react-icons/cg";
-import userLogo from "../../../assets/userLogo1.jpg";
 import "./LeftBar.css";
 import Avatar from "../../Avatar/Avatar.jsx";
 import Modal from "../../Modal/Modal.jsx";
@@ -123,7 +122,7 @@ function LeftBar() {
         <div className="profile-btn">
           <div className="profile-container group">
             <div className="profile-img">
-              <Avatar imgUrl={userLogo} />
+              <Avatar imgUrl={user?.avatar?.url || "/userLogo1.jpg"} />
             </div>
             <Link className="profile-info" to={`/profile/${user?.username}`}>
               <div>{user?.name}</div>

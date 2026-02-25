@@ -78,7 +78,7 @@ function ProfileStats({ onOpen }) {
     <div className="relative">
       <div className="h-45 w-full overflow-hidden border">
         <img
-          src={user.banner.url || "/banner.jpg"}
+          src={user.banner?.url || "/banner.jpg"}
           className="h-full w-full bg-amber-50 object-cover transition-all duration-100"
           style={{ filter: `blur(${scrollBlur}px)` }}
           alt=""
@@ -87,7 +87,7 @@ function ProfileStats({ onOpen }) {
 
       <div className="bottom absolute inset-x-0 top-28 ml-5 h-33.5 w-33.5 overflow-hidden rounded-full border-4 border-black bg-gray-300">
         <img
-          src={user.avatar.url || "/userLogo1.jpg"}
+          src={user.avatar?.url || "/userLogo1.jpg"}
           className="h-full w-full object-cover"
           alt="Profile"
         />

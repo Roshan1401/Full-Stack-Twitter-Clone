@@ -2,14 +2,13 @@ import React, { useState } from "react";
 import "./Follows.css";
 import Avatar from "../../../Avatar/Avatar.jsx";
 import { Link } from "react-router-dom";
-import userLogo from "../../../../assets/userLogo1.jpg";
 
 function Follows({ userData, handleFollow, isFollowing = false }) {
   const [isHovering, setIsHovering] = useState(false);
 
   return (
     <div className="container">
-      <Avatar imgUrl={userData?.imgUrl || userLogo} />
+      <Avatar imgUrl={userData?.avatar?.url || "/userLogo1.jpg"} />
       <div className="info">
         <Link className="name" to={`/profile/${userData.username}`}>
           {userData.name}

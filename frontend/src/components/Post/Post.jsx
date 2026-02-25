@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import Avatar from "../Avatar/Avatar";
-import userLogo from "../../assets/userLogo1.jpg";
 import { FaRegHeart, FaRegComment, FaRegBookmark } from "react-icons/fa";
 import "./Post.css";
 import OverFlowMenu from "../common/OverFlowMenu";
@@ -53,7 +52,9 @@ function Post({ post }) {
   return (
     <div className="post-container">
       <div className="post-avatar">
-        <Avatar imgUrl={userLogo} />
+        <Avatar
+          imgUrl={author?.avatar?.url || user?.avatar?.url || "/userLogo1.jpg"}
+        />
       </div>
       <div className="post-content">
         <div className="post-header">

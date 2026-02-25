@@ -1,18 +1,18 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Input from "../Input/Input.jsx";
-import userLogo from "../../assets/userLogo1.jpg";
 import Avatar from "../Avatar/Avatar.jsx";
 import TxtArea from "../Input/TxtArea.jsx";
 import { FiImage } from "react-icons/fi";
 import "./AddPost.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addPost } from "../../Redux/posts/postSlice.js";
 import axios from "axios";
 
 function AddPost({ variant = "inline", onClose }) {
   const [selectFile, setSelectFile] = useState([]);
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.userInfo);
   const [loading, setLoading] = useState(false);
 
   const handleFiles = (e) => {
@@ -94,7 +94,7 @@ function AddPost({ variant = "inline", onClose }) {
       )}
       <div className="add-post-main">
         <div className="avatar">
-          <Avatar imgUrl={userLogo} />
+          <Avatar imgUrl={user?.avatar?.url || "/userLogo1.jpg"} />
         </div>
         <div className="tweet">
           <TxtArea
