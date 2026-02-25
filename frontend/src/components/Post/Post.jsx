@@ -5,6 +5,7 @@ import "./Post.css";
 import OverFlowMenu from "../common/OverFlowMenu";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import UserLink from "../common/UserLink";
 
 function Post({ post }) {
   const { content, files, author } = post;
@@ -56,18 +57,8 @@ function Post({ post }) {
       </div>
       <div className="post-content">
         <div className="post-header">
-          <Link
-            className="post-name"
-            to={`/profile/${author.username || user?.username}`}
-          >
-            {author.name || user?.name}
-          </Link>
-          <Link
-            className="post-username"
-            to={`/profile/${author.username || user?.username}`}
-          >
-            @{author.username || user?.username}
-          </Link>
+          <UserLink name={author.name} />
+          <UserLink username={author.username} variant="username" />
           <span className="post-time">· {timeAgo(post.createdAt)}</span>
 
           <OverFlowMenu>
