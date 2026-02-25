@@ -50,10 +50,10 @@ ul li {
 }
 
 .item-container .icon span {
-  font-size: 1.2rem;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 1.0625rem;
+  font-family: "Inter", sans-serif;
   font-weight: 500;
-  letter-spacing: 1px;
+  letter-spacing: 0px;
 }
 
 .item-container:hover .icon {
@@ -76,9 +76,11 @@ ul li {
   padding: 15px 10px;
   border-radius: 30px;
   cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: bolder;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: "Inter", sans-serif;
   border: none;
+  letter-spacing: 0.3px;
 }
 
 /* profile button */
@@ -120,12 +122,17 @@ ul li {
 }
 
 .profile-info :first-child {
-  font-weight: bolder;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
   margin-left: 1px;
-  letter-spacing: 0.5px;
+  letter-spacing: 0px;
 }
 
 .profile-info :nth-child(2) {
   color: rgb(113, 118, 123);
-  letter-spacing: 0.5px;
+  font-family: "Inter", sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  letter-spacing: 0px;
 }

@@ -28,8 +28,10 @@
 
 .nav-text span {
   color: gray;
-  font-size: 18px;
+  font-family: "Inter", sans-serif;
+  font-size: 1rem;
   font-weight: 600;
+  letter-spacing: 0px;
 }
 
 .active-line {
@@ -42,7 +44,9 @@
   transform: scaleX(0);
   transform-origin: left;
   opacity: 0;
-  transition: transform 0.2s ease, opacity 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
 }
 
 .active-line.show {

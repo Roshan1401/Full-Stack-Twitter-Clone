@@ -18,7 +18,10 @@
 
 .card-container h2 {
   padding: 0 15px;
-  font-size: 1.2rem;
+  font-family: "Poppins", sans-serif;
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
 .search {
@@ -37,7 +40,9 @@
   background: transparent;
   outline: none;
   color: white;
-  font-size: 0.95rem;
+  font-family: "Inter", sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 400;
 }
 
 .profiles-container {

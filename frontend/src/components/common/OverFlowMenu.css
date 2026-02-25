@@ -18,7 +18,9 @@
   color: #fff;
   padding: 10px 14px;
   text-align: left;
-  font-size: 14px;
+  font-family: "Inter", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 400;
   cursor: pointer;
   display: flex;
   align-items: center;
