@@ -52,9 +52,7 @@ function Post({ post }) {
   return (
     <div className="post-container">
       <div className="post-avatar">
-        <Avatar
-          imgUrl={author?.avatar?.url || user?.avatar?.url || "/userLogo1.jpg"}
-        />
+        <Avatar imgUrl={author?.avatar?.url || "/userLogo1.jpg"} />
       </div>
       <div className="post-content">
         <div className="post-header">
