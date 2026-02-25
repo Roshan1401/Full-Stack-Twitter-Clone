@@ -171,6 +171,7 @@ function RightBar() {
               <li key={profile.username}>
                 <Follows
                   userData={profile}
+                  userId={profile._id}
                   handleFollow={handleFollow}
                   isFollowing={profile.followers?.includes(currentUser?._id)}
                 />

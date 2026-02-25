@@ -30,32 +30,3 @@
 .follow-btn {
   margin-left: auto;
 }
-
-.follow-btn button {
-  background: white;
-  color: black;
-  border: none;
-  padding: 6px 16px;
-  border-radius: 999px;
-  font-family: "Inter", sans-serif;
-  font-weight: 600;
-  font-size: 0.875rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.follow-btn button:hover {
-  background: #e6e6e6;
-}
-
-.follow-btn .following-btn {
-  background: black;
-  color: white;
-  border: 1px solid rgb(83, 100, 113);
-}
-
-.follow-btn .following-btn:hover {
-  background: rgba(255, 1, 1, 0.12);
-  color: rgb(244, 33, 46);
-  border-color: rgb(103, 7, 15);
-}

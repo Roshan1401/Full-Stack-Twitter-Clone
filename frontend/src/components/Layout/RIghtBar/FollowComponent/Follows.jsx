@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import "./Follows.css";
 import Avatar from "../../../Avatar/Avatar.jsx";
 import { Link } from "react-router-dom";
+import FollowBtn from "../../../common/FollowBtn.jsx";
 
-function Follows({ userData, handleFollow, isFollowing = false }) {
+function Follows({ userData, userId, handleFollow, isFollowing = false }) {
   const [isHovering, setIsHovering] = useState(false);
 
   return (
@@ -18,20 +19,11 @@ function Follows({ userData, handleFollow, isFollowing = false }) {
         </Link>
       </div>
       <div className="follow-btn">
-        {isFollowing ? (
-          <button 
-            className="following-btn"
-            onClick={() => handleFollow("unfollow", userData._id)}
-            onMouseEnter={() => setIsHovering(true)}
-            onMouseLeave={() => setIsHovering(false)}
-          >
-            {isHovering ? "Unfollow" : "Following"}
-          </button>
-        ) : (
-          <button onClick={() => handleFollow("follow", userData._id)}>
-            Follow
-          </button>
-        )}
+        <FollowBtn
+          isFollowing={isFollowing}
+          handleFollow={handleFollow}
+          userId={userId}
+        />
       </div>
     </div>
   );

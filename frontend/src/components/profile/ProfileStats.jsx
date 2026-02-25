@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { setUserProfile } from "../../Redux/profile/profileSlice";
+import FollowBtn from "../common/FollowBtn";
 
 function ProfileStats({ onOpen }) {
   const dispatch = useDispatch();
@@ -16,7 +17,6 @@ function ProfileStats({ onOpen }) {
   const checkedUserFollowing = followers.includes(currentUser?._id);
 
   const [showEditProfile, setShowEditProfile] = useState(true);
-  const [isHoveringFollowing, setIsHoveringFollowing] = useState(false);
   const paramsUsername = useParams().username;
 
   const refetchProfileData = async () => {
@@ -101,22 +101,12 @@ function ProfileStats({ onOpen }) {
             >
               Edit Profile
             </button>
-          ) : checkedUserFollowing ? (
-            <button
-              className="text-md cursor-pointer rounded-3xl border border-solid border-[rgb(83,100,113)] bg-black px-5 py-1 font-bold text-white duration-75 hover:border-red-700 hover:bg-[rgba(255,1,1,0.12)] hover:text-red-500"
-              onClick={() => handleFollow("unfollow")}
-              onMouseEnter={() => setIsHoveringFollowing(true)}
-              onMouseLeave={() => setIsHoveringFollowing(false)}
-            >
-              {isHoveringFollowing ? "Unfollow" : "Following"}
-            </button>
           ) : (
-            <button
-              className="text-md cursor-pointer rounded-3xl border border-solid border-[rgb(83,100,113)] bg-white px-4 py-2 font-bold text-black duration-75 hover:bg-[rgba(245,245,245,0.8)]"
-              onClick={() => handleFollow("follow")}
-            >
-              Follow
-            </button>
+            <FollowBtn
+              isFollowing={checkedUserFollowing}
+              handleFollow={handleFollow}
+              userId={user._id}
+            />
           )}
         </div>
 
