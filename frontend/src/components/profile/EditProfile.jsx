@@ -3,10 +3,10 @@ import { Camera } from "lucide-react";
 import Input from "../Input/Input";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { setUserProfile } from "../../Redux/profile/profileSlice";
 import { setUserInfo } from "../../Redux/auth/authSlice";
 import LoadingSpinner from "../common/LoadingSpinner.jsx";
 import { useApi } from "../../hooks/useApi.js";
+import { userProfileRefetch } from "../../hooks/userProfileRefetch.js";
 
 function EditProfile({ onClose }) {
   const [loading, setLoading] = useState(false);
@@ -17,6 +17,7 @@ function EditProfile({ onClose }) {
   });
   const currentUser = useSelector((state) => state.auth.userInfo);
   const { request } = useApi();
+  const refetchProfile = userProfileRefetch();
 
   const [avatar, setAvatar] = useState(currentUser?.avatar || "/userLogo1.jpg");
   const [banner, setBanner] = useState(currentUser?.banner || "/banner.jpg");
@@ -46,9 +47,8 @@ function EditProfile({ onClose }) {
 
   const fetchUserProfile = async () => {
     try {
-      const data = await request("GET", `/user/profile/${username}`);
-      if (data) {
-        dispatch(setUserProfile(data));
+      const data = await refetchProfile(username, request);
+      if (data?.user) {
         dispatch(setUserInfo(data.user));
       }
     } catch (error) {

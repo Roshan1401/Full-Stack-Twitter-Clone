@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { setUserProfile } from "../../Redux/profile/profileSlice";
 import FollowBtn from "../common/FollowBtn";
 import { useApi } from "../../hooks/useApi.js";
+import { userProfileRefetch } from "../../hooks/userProfileRefetch.js";
 
 function ProfileStats({ onOpen }) {
-  const dispatch = useDispatch();
   const [scrollBlur, setScrollBlur] = useState(0);
   const userProfile = useSelector((state) => state.profile.userProfile);
   const user = userProfile?.user || {};
@@ -20,21 +19,13 @@ function ProfileStats({ onOpen }) {
   const [showEditProfile, setShowEditProfile] = useState(true);
   const paramsUsername = useParams().username;
 
-  const refetchProfileData = async () => {
-    try {
-      const data = await request("GET", `/user/profile/${paramsUsername}`);
-      if (data) {
-        dispatch(setUserProfile(data));
-      }
-    } catch (error) {
-      console.error("Error refetching profile data:", error);
-    }
-  };
+  const refetchProfile = userProfileRefetch();
 
   const handleFollow = async (state) => {
+    if (!state || !user?._id) return;
     try {
       await request("POST", `/${state}/${user._id}`, {});
-      await refetchProfileData();
+      await refetchProfile(paramsUsername, request);
     } catch (error) {
       console.error("Error fetching follow data:", error);
     }

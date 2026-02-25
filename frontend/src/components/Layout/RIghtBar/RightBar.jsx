@@ -2,14 +2,13 @@ import React, { useEffect, useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import Follows from "./FollowComponent/Follows";
 import "./RightBar.css";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import { setUserProfile } from "../../../Redux/profile/profileSlice";
 import UserAvatar from "../../common/UserAvatar";
 import { useApi } from "../../../hooks/useApi";
+import { userProfileRefetch } from "../../../hooks/userProfileRefetch";
 
 function RightBar() {
-  const dispatch = useDispatch();
   const params = useParams();
   const paramsUsername = params.username;
   const currentUser = useSelector((state) => state.auth.userInfo);
@@ -18,26 +17,7 @@ function RightBar() {
   const [search, setSearch] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const { request } = useApi();
-
-  const fetchRandomUsers = async () => {
-    try {
-      const data = await request("GET", "/user/random");
-      setProfiles(data);
-    } catch (error) {
-      console.error("Error fetching random users:", error);
-    }
-  };
-
-  const refetchProfileData = async () => {
-    if (paramsUsername) {
-      try {
-        const data = await request("GET", `/user/profile/${paramsUsername}`);
-        dispatch(setUserProfile(data));
-      } catch (error) {
-        console.error("Error refetching profile data:", error);
-      }
-    }
-  };
+  const refetchProfile = userProfileRefetch();
 
   const handleFollow = async (action, userId) => {
     try {
@@ -58,15 +38,23 @@ function RightBar() {
         ),
       );
 
-      await refetchProfileData();
+      await refetchProfile(paramsUsername, request);
     } catch (error) {
       console.error("Error fetching follow data:", error);
     }
   };
 
   useEffect(() => {
+    const fetchRandomUsers = async () => {
+      try {
+        const data = await request("GET", "/user/random");
+        setProfiles(data);
+      } catch (error) {
+        console.error("Error fetching random users:", error);
+      }
+    };
     fetchRandomUsers();
-  }, []);
+  }, [request]);
 
   const handleSearch = (query) => {
     setSearch(query);
@@ -90,7 +78,7 @@ function RightBar() {
     }, 500);
 
     return () => clearTimeout(delayDebounceFn);
-  }, [search]);
+  }, [search, request]);
 
   return (
     <div className="RightBar-container">
