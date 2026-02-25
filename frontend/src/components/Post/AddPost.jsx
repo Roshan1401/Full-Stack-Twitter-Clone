@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Input from "../Input/Input.jsx";
-import Avatar from "../Avatar/Avatar.jsx";
+import UserAvatar from "../common/UserAvatar.jsx";
 import TxtArea from "../Input/TxtArea.jsx";
 import { FiImage } from "react-icons/fi";
 import "./AddPost.css";
@@ -87,7 +87,7 @@ function AddPost({ variant = "inline", onClose }) {
       )}
       <div className="add-post-main">
         <div className="avatar">
-          <Avatar imgUrl={user?.avatar?.url || "/userLogo1.jpg"} />
+          <UserAvatar user={user} />
         </div>
         <div className="tweet">
           <TxtArea

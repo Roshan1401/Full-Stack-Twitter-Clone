@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./Follows.css";
-import Avatar from "../../../Avatar/Avatar.jsx";
+import UserAvatar from "../../../common/UserAvatar.jsx";
 import { Link } from "react-router-dom";
 import FollowBtn from "../../../common/FollowBtn.jsx";
 
@@ -9,7 +9,7 @@ function Follows({ userData, userId, handleFollow, isFollowing = false }) {
 
   return (
     <div className="container">
-      <Avatar imgUrl={userData?.avatar?.url || "/userLogo1.jpg"} />
+      <UserAvatar user={userData} />
       <div className="info">
         <Link className="name" to={`/profile/${userData.username}`}>
           {userData.name}

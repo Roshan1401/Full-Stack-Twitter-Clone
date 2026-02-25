@@ -5,7 +5,7 @@ import "./RightBar.css";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { setUserProfile } from "../../../Redux/profile/profileSlice";
-import Avatar from "../../Avatar/Avatar";
+import UserAvatar from "../../common/UserAvatar";
 import { useApi } from "../../../hooks/useApi";
 
 function RightBar() {
@@ -116,7 +116,7 @@ function RightBar() {
                     key={user._id}
                     className="flex cursor-pointer gap-4 px-4 py-3 hover:bg-neutral-900"
                   >
-                    <Avatar imgUrl={user.avatar?.url || "/userLogo1.jpg"} />
+                    <UserAvatar user={user} />
                     <div className="flex flex-col text-white">
                       <span className="text-md font-semibold">{user.name}</span>
                       <span className="text-sm text-[gray]">
