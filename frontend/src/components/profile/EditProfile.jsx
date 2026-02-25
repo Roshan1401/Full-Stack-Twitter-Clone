@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Camera } from "lucide-react";
 import Input from "../Input/Input";
-import TxtArea from "../Input/TxtArea";
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserProfile } from "../../Redux/profile/profileSlice";
 import { setUserInfo } from "../../Redux/auth/authSlice";
 import LoadingSpinner from "../common/LoadingSpinner.jsx";
+import { useApi } from "../../hooks/useApi.js";
 
 function EditProfile({ onClose }) {
   const [loading, setLoading] = useState(false);
@@ -17,6 +16,7 @@ function EditProfile({ onClose }) {
     banner: null,
   });
   const currentUser = useSelector((state) => state.auth.userInfo);
+  const { request } = useApi();
 
   const [avatar, setAvatar] = useState(currentUser?.avatar || "/userLogo1.jpg");
   const [banner, setBanner] = useState(currentUser?.banner || "/banner.jpg");
@@ -46,19 +46,10 @@ function EditProfile({ onClose }) {
 
   const fetchUserProfile = async () => {
     try {
-      const res = await axios.get(
-        `http://localhost:5000/api/v1/user/profile/${username}`,
-        {
-          withCredentials: true,
-        },
-      );
-
-      const data = res.data;
-
-      if (data.success) {
-        // console.log(data);
-        dispatch(setUserProfile(data.data));
-        dispatch(setUserInfo(data.data.user));
+      const data = await request("GET", `/user/profile/${username}`);
+      if (data) {
+        dispatch(setUserProfile(data));
+        dispatch(setUserInfo(data.user));
       }
     } catch (error) {
       console.error("Error fetching user profile:", error);
@@ -81,17 +72,9 @@ function EditProfile({ onClose }) {
       formData.append("name", data.name);
       formData.append("bio", data.bio);
 
-      const res = await axios.put(
-        "http://localhost:5000/api/v1/user/edit",
-        formData,
-        {
-          withCredentials: true,
-        },
-      );
-
-      const result = res.data;
+      const result = await request("PUT", "/user/edit", formData);
       console.log("Update profile result", result);
-      if (result.success) {
+      if (result) {
         reset();
         onClose();
         await fetchUserProfile();

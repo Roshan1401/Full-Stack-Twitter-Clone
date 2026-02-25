@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login as authLogin } from "../../../Redux/auth/authSlice.js";
-import axios from "axios";
+import { useApi } from "../../../hooks/useApi.js";
 
 function SignUp() {
   const {
@@ -19,35 +19,23 @@ function SignUp() {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { request } = useApi();
 
   const submit = async (data) => {
     console.log(data);
-    const signupRes = await axios.post(
-      "http://localhost:5000/api/v1/auth/signup",
-      data,
-    );
+    const signupData = await request("POST", "/auth/signup", data);
 
-    const signupData = signupRes.data;
-
-    if (!signupData.success) {
-      alert(signupData.message);
+    if (!signupData) {
+      alert("Signup failed");
       return;
     }
 
     console.log("Signup success");
 
-    const loginRes = await axios.post(
-      "http://localhost:5000/api/v1/auth/login",
-      data,
-      {
-        withCredentials: true,
-      },
-    );
+    const loginData = await request("POST", "/auth/login", data);
 
-    const loginData = loginRes.data;
-
-    if (loginData.success) {
-      dispatch(authLogin({ userInfo: loginData.data.user }));
+    if (loginData) {
+      dispatch(authLogin({ userInfo: loginData.user }));
       navigate("/");
     }
   };

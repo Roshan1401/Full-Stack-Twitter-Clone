@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import Follows from "./FollowComponent/Follows";
 import "./RightBar.css";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { setUserProfile } from "../../../Redux/profile/profileSlice";
 import Avatar from "../../Avatar/Avatar";
+import { useApi } from "../../../hooks/useApi";
 
 function RightBar() {
   const dispatch = useDispatch();
@@ -17,17 +17,12 @@ function RightBar() {
 
   const [search, setSearch] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const { request } = useApi();
 
   const fetchRandomUsers = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/v1/user/random", {
-        withCredentials: true,
-      });
-
-      const data = res.data;
-      if (data.success) {
-        setProfiles(data.data);
-      }
+      const data = await request("GET", "/user/random");
+      setProfiles(data);
     } catch (error) {
       console.error("Error fetching random users:", error);
     }
@@ -36,15 +31,8 @@ function RightBar() {
   const refetchProfileData = async () => {
     if (paramsUsername) {
       try {
-        const res = await axios.get(
-          `http://localhost:5000/api/v1/user/profile/${paramsUsername}`,
-          {
-            withCredentials: true,
-          },
-        );
-        if (res.data.success) {
-          dispatch(setUserProfile(res.data.data));
-        }
+        const data = await request("GET", `/user/profile/${paramsUsername}`);
+        dispatch(setUserProfile(data));
       } catch (error) {
         console.error("Error refetching profile data:", error);
       }
@@ -53,34 +41,24 @@ function RightBar() {
 
   const handleFollow = async (action, userId) => {
     try {
-      const res = await axios.post(
-        `http://localhost:5000/api/v1/${action}/${userId}`,
-        {},
-        {
-          withCredentials: true,
-        },
+      await request("POST", `/${action}/${userId}`, {});
+      setProfiles((prevProfiles) =>
+        prevProfiles.map((profile) =>
+          profile._id === userId
+            ? {
+                ...profile,
+                followers:
+                  action === "follow"
+                    ? [...(profile.followers || []), currentUser._id]
+                    : (profile.followers || []).filter(
+                        (id) => id !== currentUser._id,
+                      ),
+              }
+            : profile,
+        ),
       );
 
-      const data = res.data;
-      if (data.success) {
-        setProfiles((prevProfiles) =>
-          prevProfiles.map((profile) =>
-            profile._id === userId
-              ? {
-                  ...profile,
-                  followers:
-                    action === "follow"
-                      ? [...(profile.followers || []), currentUser._id]
-                      : (profile.followers || []).filter(
-                          (id) => id !== currentUser._id,
-                        ),
-                }
-              : profile,
-          ),
-        );
-
-        await refetchProfileData();
-      }
+      await refetchProfileData();
     } catch (error) {
       console.error("Error fetching follow data:", error);
     }
@@ -99,15 +77,8 @@ function RightBar() {
     const delayDebounceFn = setTimeout(() => {
       const searchUsers = async () => {
         try {
-          const res = await axios.get(
-            `http://localhost:5000/api/v1/search/users?query=${search}`,
-            {
-              withCredentials: true,
-            },
-          );
-          if (res.data.success) {
-            setSearchResults(res.data.data);
-          }
+          const data = await request("GET", `/search/users?query=${search}`);
+          setSearchResults(data);
         } catch (error) {
           console.error("Error searching users:", error);
         }

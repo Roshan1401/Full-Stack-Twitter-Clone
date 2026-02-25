@@ -13,7 +13,7 @@ import AddPost from "../../Post/AddPost.jsx";
 import OverFlowMenu from "../../common/OverFlowMenu.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { logout as authLogout } from "../../../Redux/auth/authSlice";
-import axios from "axios";
+import { useApi } from "../../../hooks/useApi.js";
 
 function LeftBar() {
   const user = useSelector((state) => state.auth.userInfo);
@@ -58,27 +58,19 @@ function LeftBar() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const {request} = useApi();
+
   const scrollHomeToTop = () => {
     document.body.scrollTo({ top: 0, behavior: "auto" });
   };
 
   const handleLogout = async () => {
     try {
-      const res = await axios.post(
-        "http://localhost:5000/api/v1/auth/logout",
-        {},
-        {
-          withCredentials: true,
-        },
-      );
-      const data = res.data;
-      if (data.success) {
-        console.log("Logout successful");
-        dispatch(authLogout());
-        navigate("/login");
-      }
+      await request("POST", "/auth/logout", {});
+      dispatch(authLogout());
+      navigate("/login");
     } catch (error) {
-      console.log(error);
+      console.error("Logout error:", error);
     }
   };
 

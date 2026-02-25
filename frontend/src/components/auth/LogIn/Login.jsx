@@ -7,29 +7,22 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login as authLogin } from "../../../Redux/auth/authSlice.js";
-import axios from "axios";
+import { useApi } from "../../../hooks/useApi.js";
 
 function Login() {
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { request } = useApi();
 
   const submit = async (data) => {
-    const res = await axios.post(
-      "http://localhost:5000/api/v1/auth/login",
-      data,
-      {
-        withCredentials: true,
-      },
-    );
+    const responseData = await request("POST", "/auth/login", data);
 
-    const responseData = res.data;
-
-    if (responseData.success) {
-      dispatch(authLogin({ userInfo: responseData.data.user }));
+    if (responseData) {
+      dispatch(authLogin({ userInfo: responseData.user }));
       navigate("/");
     } else {
-      alert(responseData.message);
+      alert("Login failed");
     }
   };
 

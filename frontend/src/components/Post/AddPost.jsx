@@ -7,14 +7,15 @@ import { FiImage } from "react-icons/fi";
 import "./AddPost.css";
 import { useDispatch, useSelector } from "react-redux";
 import { addPost } from "../../Redux/posts/postSlice.js";
-import axios from "axios";
 import LoadingSpinner from "../common/LoadingSpinner.jsx";
+import { useApi } from "../../hooks/useApi.js";
 
 function AddPost({ variant = "inline", onClose }) {
   const [selectFile, setSelectFile] = useState([]);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.userInfo);
   const [loading, setLoading] = useState(false);
+  const { request } = useApi();
 
   const handleFiles = (e) => {
     const files = Array.from(e.target.files).map((file) => ({
@@ -46,7 +47,6 @@ function AddPost({ variant = "inline", onClose }) {
   });
 
   const onSubmit = async (data) => {
-    // console.log("Form data", data);
     setLoading(true);
     try {
       const formData = new FormData();
@@ -55,20 +55,10 @@ function AddPost({ variant = "inline", onClose }) {
         formData.append("files", f.file);
       });
 
-      const res = await axios.post(
-        "http://localhost:5000/api/v1/post/",
-        formData,
-        {
-          withCredentials: true,
-        },
-      );
+      const result = await request("POST", "/post/", formData);
 
-      const result = res.data;
-
-      if (result.success) {
-        // console.log("Post created successfully", result.data);
-        dispatch(addPost(result.data));
-        setLoading(false);
+      if (result) {
+        dispatch(addPost(result));
         onClose && onClose();
       }
 
@@ -76,6 +66,8 @@ function AddPost({ variant = "inline", onClose }) {
       setSelectFile([]);
     } catch (error) {
       console.error("Error creating post:", error);
+    } finally {
+      setLoading(false);
     }
   };
 

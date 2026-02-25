@@ -5,38 +5,30 @@ import AddPost from "../../Post/AddPost.jsx";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "../../../Redux/posts/postSlice.js";
-import axios from "axios";
 import LoadingSpinner from "../../common/LoadingSpinner.jsx";
+import { useApi } from "../../../hooks/useApi.js";
 
 function Home() {
   const [loading, setLoading] = useState(true);
   const posts = useSelector((state) => state.posts.posts);
   const dispatch = useDispatch();
+  const { request } = useApi();
 
   useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const data = await request("GET", "/post/getAllPosts");
+        if (data) {
+          dispatch(setPosts(data));
+        }
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchPosts();
   }, []);
-
-  const fetchPosts = async () => {
-    try {
-      const res = await axios.get(
-        "http://localhost:5000/api/v1/post/getAllPosts",
-        {
-          withCredentials: true,
-        },
-      );
-
-      const data = res.data;
-      if (data.success) {
-        // console.log(data);
-        dispatch(setPosts(data.data));
-      }
-    } catch (error) {
-      console.error("Error fetching posts:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <div className="home-container">

@@ -10,8 +10,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setUserProfile } from "../../Redux/profile/profileSlice.js";
 import { clearProfile } from "../../Redux/profile/profileSlice.js";
 import Post from "../Post/Post.jsx";
-import axios from "axios";
 import LoadingSpinner from "../common/LoadingSpinner.jsx";
+import { useApi } from "../../hooks/useApi.js";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 
@@ -20,35 +20,26 @@ function Profile() {
   const [loading, setLoading] = useState(true);
   const username = useParams().username;
   const dispatch = useDispatch();
+  const { request } = useApi();
   const userProfile = useSelector((state) => state.profile.userProfile);
   const userPosts = userProfile?.posts || [];
   useEffect(() => {
     setLoading(true);
     dispatch(clearProfile());
-    fetchUserProfile();
-  }, [username, dispatch]);
-
-  const fetchUserProfile = async () => {
-    try {
-      const res = await axios.get(
-        `http://localhost:5000/api/v1/user/profile/${username}`,
-        {
-          withCredentials: true,
-        },
-      );
-
-      const data = res.data;
-
-      if (data.success) {
-        // console.log(data);
-        dispatch(setUserProfile(data.data));
+    const fetchUserProfile = async () => {
+      try {
+        const data = await request("GET", `/user/profile/${username}`);
+        if (data) {
+          dispatch(setUserProfile(data));
+        }
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error("Error fetching user profile:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
+    fetchUserProfile();
+  }, [username, dispatch, request]);
   return !loading ? (
     <div className="profile-content">
       <ProfileHeader />

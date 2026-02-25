@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import { setUserProfile } from "../../Redux/profile/profileSlice";
 import FollowBtn from "../common/FollowBtn";
+import { useApi } from "../../hooks/useApi.js";
 
 function ProfileStats({ onOpen }) {
   const dispatch = useDispatch();
@@ -15,20 +15,16 @@ function ProfileStats({ onOpen }) {
   const currentUser = useSelector((state) => state.auth.userInfo);
   const currentUsername = useSelector((state) => state.auth.userInfo?.username);
   const checkedUserFollowing = followers.includes(currentUser?._id);
+  const { request } = useApi();
 
   const [showEditProfile, setShowEditProfile] = useState(true);
   const paramsUsername = useParams().username;
 
   const refetchProfileData = async () => {
     try {
-      const res = await axios.get(
-        `http://localhost:5000/api/v1/user/profile/${paramsUsername}`,
-        {
-          withCredentials: true,
-        },
-      );
-      if (res.data.success) {
-        dispatch(setUserProfile(res.data.data));
+      const data = await request("GET", `/user/profile/${paramsUsername}`);
+      if (data) {
+        dispatch(setUserProfile(data));
       }
     } catch (error) {
       console.error("Error refetching profile data:", error);
@@ -37,18 +33,8 @@ function ProfileStats({ onOpen }) {
 
   const handleFollow = async (state) => {
     try {
-      const res = await axios.post(
-        `http://localhost:5000/api/v1/${state}/${user._id}`,
-        {},
-        {
-          withCredentials: true,
-        },
-      );
-
-      const data = res.data;
-      if (data.success) {
-        await refetchProfileData();
-      }
+      await request("POST", `/${state}/${user._id}`, {});
+      await refetchProfileData();
     } catch (error) {
       console.error("Error fetching follow data:", error);
     }
