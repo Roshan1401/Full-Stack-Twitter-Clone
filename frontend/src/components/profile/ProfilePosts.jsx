@@ -15,7 +15,7 @@ function ProfilePosts() {
         />
       )}
       {userPosts.map((post) => (
-        <Post key={post._id} post={post} />
+        <Post key={post._id} post={post} user={userProfile.user} />
       ))}
     </>
   );

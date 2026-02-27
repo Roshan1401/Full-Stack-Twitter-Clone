@@ -7,11 +7,10 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import UserLink from "../common/UserLink";
 
-function Post({ post }) {
-  const { content, files, author } = post;
+function Post({ post, user }) {
+  const { content, files } = post;
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef(null);
-  const user = useSelector((state) => state.auth.userInfo);
 
   const timeAgo = (timestamp) => {
     const now = new Date();
@@ -49,16 +48,18 @@ function Post({ post }) {
     console.log("Delete post");
     //delete post api
   };
+  console.log("author", user);
+  console.log("Post", post);
 
   return (
     <div className="post-container">
       <div className="post-avatar">
-        <UserAvatar user={author} />
+        <UserAvatar user={user} />
       </div>
       <div className="post-content">
         <div className="post-header">
-          <UserLink name={author.name} />
-          <UserLink username={author.username} variant="username" />
+          <UserLink name={user.name} />
+          <UserLink username={user.username} variant="username" />
           <span className="post-time">· {timeAgo(post.createdAt)}</span>
 
           <OverFlowMenu>
