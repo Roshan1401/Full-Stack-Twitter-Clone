@@ -7,6 +7,7 @@ import { Link, useParams } from "react-router-dom";
 import UserAvatar from "../../common/UserAvatar";
 import { useApi } from "../../../hooks/useApi";
 import { userProfileRefetch } from "../../../hooks/userProfileRefetch";
+import Search from "../../common/Search";
 
 function RightBar() {
   const params = useParams();
@@ -82,46 +83,7 @@ function RightBar() {
 
   return (
     <div className="RightBar-container">
-      <div className="search">
-        <FiSearch />
-        <input
-          type="text"
-          placeholder="Search"
-          onChange={(e) => handleSearch(e.target.value)}
-        />
-      </div>
-      {search.trim() !== "" && (
-        <div className="rounded-lg border border-t-0 border-[#2f3336] bg-black">
-          <div className="flex flex-col py-5">
-            <p className="text-center text-sm text-neutral-400">
-              Search People
-            </p>
-            <div className="mt-5">
-              {searchResults.length > 0 ? (
-                searchResults.map((user) => (
-                  <Link
-                    to={`/profile/${user.username}`}
-                    key={user._id}
-                    className="flex cursor-pointer gap-4 px-4 py-3 hover:bg-neutral-900"
-                  >
-                    <UserAvatar user={user} />
-                    <div className="flex flex-col text-white">
-                      <span className="text-md font-semibold">{user.name}</span>
-                      <span className="text-sm text-[gray]">
-                        @{user.username}
-                      </span>
-                    </div>
-                  </Link>
-                ))
-              ) : (
-                <p className="text-center text-sm text-neutral-400">
-                  No users found
-                </p>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
+      <Search />
       <div className="card-container">
         <h2>Who to follow</h2>
         <div className="profiles-container">

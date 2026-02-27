@@ -24,27 +24,6 @@
   letter-spacing: -0.01em;
 }
 
-.search {
-  display: flex;
-  align-items: center;
-  border-radius: 999px;
-  gap: 10px;
-  padding: 12px 15px;
-  color: white;
-  background: #202327;
-}
-
-.search input {
-  flex: 1;
-  border: none;
-  background: transparent;
-  outline: none;
-  color: white;
-  font-family: "Inter", sans-serif;
-  font-size: 0.9375rem;
-  font-weight: 400;
-}
-
 .profiles-container {
   margin-top: 10px;
   /* padding: 0 5px; */
