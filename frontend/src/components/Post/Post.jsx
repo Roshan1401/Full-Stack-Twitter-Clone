@@ -1,17 +1,25 @@
 import React, { useEffect, useRef, useState } from "react";
 import UserAvatar from "../common/UserAvatar";
-import { FaRegHeart, FaRegComment, FaRegBookmark } from "react-icons/fa";
+import {
+  FaHeart,
+  FaRegHeart,
+  FaRegComment,
+  FaRegBookmark,
+} from "react-icons/fa";
 import "./Post.css";
 import OverFlowMenu from "../common/OverFlowMenu";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import UserLink from "../common/UserLink";
+import { useApi } from "../../hooks/useApi";
+import { updatePostLikes } from "../../Redux/posts/postSlice";
 
 function Post({ post }) {
   const { content, files, author } = post;
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef(null);
-  const user = useSelector((state) => state.auth.userInfo);
+  const { request } = useApi();
+  const dispatch = useDispatch();
 
   const timeAgo = (timestamp) => {
     const now = new Date();
@@ -48,6 +56,28 @@ function Post({ post }) {
     setShowMenu(false);
     console.log("Delete post");
     //delete post api
+  };
+
+  const handleLike = async () => {
+    try {
+      const data = await request("POST", `/post/${post._id}/like`, {
+        withCredentials: true,
+      });
+
+      if (data) {
+        console.log("Liked post:", data);
+
+        dispatch(
+          updatePostLikes({
+            postId: post._id,
+            likes: data.likes,
+            isLiked: data.isLiked,
+          }),
+        );
+      }
+    } catch (error) {
+      console.error("Error liking post:", error);
+    }
   };
 
   return (
@@ -100,13 +130,22 @@ function Post({ post }) {
         )}
 
         <div className="post-actions">
-          <button className="action-btn heart-btn">
-            <FaRegHeart size={18} />
-            <span>12</span>
+          <button
+            className={`action-btn heart-btn ${post.isLiked ? "text-[#e0245e]" : ""}`}
+            onClick={() => handleLike()}
+          >
+            {post.isLiked ? (
+              <FaHeart size={18} color="#e0245e" />
+            ) : (
+              <FaRegHeart size={18} />
+            )}
+            <span className={post.isLiked ? "text-red-600" : ""}>
+              {post.likes}
+            </span>
           </button>
           <button className="action-btn comment-btn">
             <FaRegComment size={18} />
-            <span>4</span>
+            <span></span>
           </button>
           <button className="action-btn bookmark-btn">
             <FaRegBookmark size={18} />

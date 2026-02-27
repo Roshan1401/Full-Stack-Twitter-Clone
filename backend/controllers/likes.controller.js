@@ -6,6 +6,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { isValidObjectId } from "mongoose";
 
 const toggleLike = asyncHandler(async (req, res) => {
+  let isLiked = null;
   const { postId } = req.params;
 
   if (!req.user?._id) {
@@ -22,16 +23,24 @@ const toggleLike = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Post not found.");
   }
 
-  const userId = req.user._id.toString();
+  const userId = req.user._id;
 
   const existingLike = await Like.findOne({ likedBy: userId, post: postId });
 
   if (existingLike) {
     await Like.findByIdAndDelete(existingLike._id);
-    await Post.findByIdAndUpdate(postId, { $inc: { likes: -1 } });
-    return res
-      .status(200)
-      .json(new ApiResponse(200, "Post unliked successfully."));
+    const updatedPost = await Post.findByIdAndUpdate(
+      postId,
+      { $inc: { likes: -1 } },
+      { new: true },
+    ).populate("author", "name username avatar");
+    isLiked = false;
+    return res.status(200).json(
+      new ApiResponse(200, "Post unliked successfully.", {
+        likes: updatedPost.likes,
+        isLiked,
+      }),
+    );
   }
 
   const createLike = await Like.create({
@@ -39,13 +48,24 @@ const toggleLike = asyncHandler(async (req, res) => {
     post: postId,
   });
 
-  await Post.findByIdAndUpdate(postId, { $inc: { likes: 1 } });
+  const updatedPost = await Post.findByIdAndUpdate(
+    postId,
+    {
+      $inc: { likes: 1 },
+    },
+    { new: true },
+  ).populate("author", "name username avatar");
 
   if (!createLike) {
     throw new ApiError(500, "Failed to like the post. Please try again later.");
   }
-
-  return res.status(200).json(new ApiResponse(200, "Post liked successfully."));
+  isLiked = true;
+  return res.status(200).json(
+    new ApiResponse(200, "Post liked successfully.", {
+      likes: updatedPost.likes,
+      isLiked,
+    }),
+  );
 });
 
 export { toggleLike };
