@@ -30,6 +30,7 @@ function Home() {
     fetchPosts();
   }, []);
 
+  // console.log(posts);
   return (
     <div className="home-container">
       <div className="feed-container">

@@ -78,7 +78,9 @@ const getUserProfile = asyncHandler(async (req, res) => {
   const userPosts = await Post.find({
     author: user._id,
     isDeleted: false,
-  }).sort({ createdAt: -1 });
+  })
+    .sort({ createdAt: -1 })
+    .populate("author", "name username avatar");
 
   res.status(200).json(
     new ApiResponse(200, "User fetched successfully.", {
