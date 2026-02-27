@@ -8,6 +8,7 @@ import {
   getAllPosts,
 } from "../controllers/post.controller.js";
 import { upload } from "../middleware/multer.middlewaer.js";
+import { toggleLike } from "../controllers/likes.controller.js";
 
 const router = Router();
 
@@ -18,5 +19,6 @@ router.route("/").post(upload.array("files"), addPost);
 router.route("/:postId").patch(updatePost);
 router.route("/:postId").delete(deletePost);
 router.route("/:postId").get(getPostById);
+router.route("/:postId/like").post(toggleLike);
 
 export default router;
