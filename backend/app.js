@@ -23,6 +23,7 @@ import postRouter from "./routes/post.route.js";
 import userRouter from "./routes/user.route.js";
 import followRouter from "./routes/follow.route.js";
 import searchRouter from "./routes/search.route.js";
+import bookmarkRouter from "./routes/bookmark.route.js";
 //Using Routes
 
 app.use("/api/v1/auth", authRouter);
@@ -30,6 +31,7 @@ app.use("/api/v1/post", postRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/", followRouter);
 app.use("/api/v1/search", searchRouter);
+app.use("/api/v1/bookmark", bookmarkRouter);
 
 // Error Handling Middleware
 app.use(errorHandler);
