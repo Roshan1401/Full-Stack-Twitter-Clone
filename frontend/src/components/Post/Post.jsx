@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import UserLink from "../common/UserLink";
 import { useApi } from "../../hooks/useApi";
 import { updatePostLikes } from "../../Redux/posts/postSlice";
+import { updateBookmark } from "../../Redux/bookmarks/bookmarkslice";
 
 function Post({ post }) {
   const { content, files, author } = post;
@@ -77,6 +78,26 @@ function Post({ post }) {
       }
     } catch (error) {
       console.error("Error liking post:", error);
+    }
+  };
+
+  const handleBookmark = async () => {
+    try {
+      const data = await request("POST", `/bookmark/toggle/${post._id}`, {
+        withCredentials: true,
+      });
+
+      if (data) {
+        dispatch(
+          updateBookmark({
+            bookmarkId: data.bookmarkId,
+            isBookmarked: data.isBookmarked,
+            post: post,
+          }),
+        );
+      }
+    } catch (error) {
+      console.error("Error bookmarking post:", error);
     }
   };
 
@@ -147,7 +168,10 @@ function Post({ post }) {
             <FaRegComment size={18} />
             <span></span>
           </button>
-          <button className="action-btn bookmark-btn">
+          <button
+            onClick={() => handleBookmark()}
+            className="action-btn bookmark-btn"
+          >
             <FaRegBookmark size={18} />
           </button>
         </div>

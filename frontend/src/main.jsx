@@ -21,8 +21,9 @@ import ProfileLikes from "./components/profile/ProfileLikes.jsx";
 import ScrollToTop from "./components/Scroll/ScrollToTop.jsx";
 import AuthInitializer from "./components/auth/AuthInitializer.jsx";
 import Explore from "./components/pages/Explore.jsx";
-import Notification from "./components/common/Notification.jsx";
-import Setting from "./components/common/Setting.jsx";
+import Notification from "./components/pages/Notification.jsx";
+import Setting from "./components/pages/Setting.jsx";
+import Bookmark from "./components/pages/Bookmark.jsx";
 
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
@@ -56,7 +57,14 @@ createRoot(document.getElementById("root")).render(
                 </div>
               }
             />
-            <Route path="/bookmarks" element={<div>Bookmark Page</div>} />
+            <Route
+              path="/bookmarks"
+              element={
+                <div>
+                  <Bookmark />
+                </div>
+              }
+            />
             <Route
               path="/setting"
               element={
