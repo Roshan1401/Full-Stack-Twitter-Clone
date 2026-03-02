@@ -29,20 +29,27 @@ const toggleBookmark = asyncHandler(async (req, res) => {
   });
 
   if (existingBookmark) {
-    await Bookmark.findByIdAndDelete(existingBookmark._id);
+    const bookmark = await Bookmark.findByIdAndDelete(existingBookmark._id);
     isBookmarked = false;
-    return res
-      .status(200)
-      .json(
-        new ApiResponse(200, "Post removed from bookmarks", { isBookmarked }),
-      );
+    return res.status(200).json(
+      new ApiResponse(200, "Post removed from bookmarks", {
+        bookmarkId: bookmark._id,
+        isBookmarked,
+      }),
+    );
   }
 
-  await Bookmark.create({ bookmarkedBy: req.user._id, post: postId });
+  const bookmark = await Bookmark.create({
+    bookmarkedBy: req.user._id,
+    post: postId,
+  });
   isBookmarked = true;
-  return res
-    .status(200)
-    .json(new ApiResponse(200, "Post bookmarked", { isBookmarked }));
+  return res.status(200).json(
+    new ApiResponse(200, "Post bookmarked", {
+      bookmarkId: bookmark._id,
+      isBookmarked,
+    }),
+  );
 });
 
 const getBookmarks = asyncHandler(async (req, res) => {
@@ -52,13 +59,20 @@ const getBookmarks = asyncHandler(async (req, res) => {
 
   const bookmarks = await Bookmark.find({
     bookmarkedBy: req.user._id,
-  }).populate("post");
+  }).populate({
+    path: "post",
+    select: "content author createdAt files likes",
+    populate: {
+      path: "author",
+      select: "name username avatar",
+    },
+  });
 
-  return res
-    .status(200)
-    .json(
-      new ApiResponse(200, "Bookmarks retrieved successfully", { bookmarks }),
-    );
+  return res.status(200).json(
+    new ApiResponse(200, "Bookmarks retrieved successfully", {
+      bookmarks: bookmarks,
+    }),
+  );
 });
 
 export { toggleBookmark, getBookmarks };
