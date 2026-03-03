@@ -1,7 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import logo from "../../assets/logo3.png";
+import logo from "../../assets/logo.svg";
 import "./AuthForm.css";
 
 function AuthFormLayout({
@@ -14,7 +14,11 @@ function AuthFormLayout({
   bottomDescription,
   containerClass = "auth-container",
 }) {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   return (
     <div className={`auth-container ${containerClass || ""}`}>
@@ -33,9 +37,7 @@ function AuthFormLayout({
                 {...register(field.name, field.validation)}
               />
               {errors[field.name] && (
-                <p className="error-text">
-                  {errors[field.name].message}
-                </p>
+                <p className="error-text">{errors[field.name].message}</p>
               )}
             </div>
           ))}
