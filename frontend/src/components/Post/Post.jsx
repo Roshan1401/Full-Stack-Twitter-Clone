@@ -20,7 +20,9 @@ import {
 import { updateBookmark } from "../../Redux/bookmarks/bookmarkslice";
 
 function Post({ post }) {
+  console.log("Rendering Post:", post);
   const { content, files, author } = post;
+  console.log("Post Author:", author);
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef(null);
   const { request } = useApi();
@@ -119,8 +121,8 @@ function Post({ post }) {
       </div>
       <div className="post-content">
         <div className="post-header">
-          <UserLink name={author.name} />
-          <UserLink username={author.username} variant="username" />
+          <UserLink name={author.name} username={author.username} />
+          <UserLink name={author.name} username={author.username} variant="username" />
           <span className="post-time">· {timeAgo(post.createdAt)}</span>
 
           <OverFlowMenu>
