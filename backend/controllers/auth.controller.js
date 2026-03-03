@@ -82,6 +82,7 @@ const login = asyncHandler(async (req, res) => {
   const isPasswordValid = await bcrypt.compare(password, user.password);
 
   if (!isPasswordValid) {
+    alert("Invalid password. Please try again.");
     throw new ApiError(401, "Invalid password. Please try again.");
   }
 
