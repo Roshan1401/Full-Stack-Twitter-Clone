@@ -20,13 +20,12 @@ const otpSchema = new Schema(
   { timestamps: true },
 );
 
-otpSchema.pre("save", async function (next) {
+otpSchema.pre("save", async function () {
   if (!this.isModified("otp")) {
-    return next();
+    return;
   }
 
   this.otp = await bcrypt.hash(this.otp, 10);
-  next();
 });
 
 otpSchema.methods.compareOtp = async function (otp) {

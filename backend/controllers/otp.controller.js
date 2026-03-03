@@ -67,20 +67,23 @@ const sendOtp = asyncHandler(async (req, res) => {
     text: `Your OTP is ${otp}`,
   });
 
-  return res.status(200).json({
-    success: true,
-    message: "OTP sent to email successfully",
-  });
+  return res.status(200).json(
+    new ApiResponse(200, "OTP sent to email successfully", {
+      success: true,
+    }),
+  );
 });
 
 const verifyOtp = asyncHandler(async (req, res) => {
   const { email, otp, name, username, password } = req.body;
-
-  const otpRecord = await OTP.findOne({ email });
-
-  if (!otp || otp.length !== 6) {
+  
+  const normalizedOtp = String(otp || "").trim();
+  
+  if (!/^\d{6}$/.test(normalizedOtp)) {
     throw new ApiError(400, "OTP must be a 6-digit number");
   }
+  
+  const otpRecord = await OTP.findOne({ email });
 
   if (!otpRecord) {
     throw new ApiError(400, "OTP not found. Please request a new one.");
@@ -90,7 +93,7 @@ const verifyOtp = asyncHandler(async (req, res) => {
     throw new ApiError(400, "OTP has expired. Please request a new one.");
   }
 
-  const isValidOtp = await otpRecord.compareOtp(otp);
+  const isValidOtp = await otpRecord.compareOtp(normalizedOtp);
 
   if (!isValidOtp) {
     throw new ApiError(400, "Invalid OTP. Please try again.");

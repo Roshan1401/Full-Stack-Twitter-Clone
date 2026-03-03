@@ -24,6 +24,7 @@ import userRouter from "./routes/user.route.js";
 import followRouter from "./routes/follow.route.js";
 import searchRouter from "./routes/search.route.js";
 import bookmarkRouter from "./routes/bookmark.route.js";
+import otpRouter from "./routes/otp.route.js";
 //Using Routes
 
 app.use("/api/v1/auth", authRouter);
@@ -32,6 +33,7 @@ app.use("/api/v1/user", userRouter);
 app.use("/api/v1/", followRouter);
 app.use("/api/v1/search", searchRouter);
 app.use("/api/v1/bookmark", bookmarkRouter);
+app.use("/api/v1/otp", otpRouter);
 
 // Error Handling Middleware
 app.use(errorHandler);

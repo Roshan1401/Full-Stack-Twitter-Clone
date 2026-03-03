@@ -88,15 +88,19 @@ const getUserProfile = asyncHandler(async (req, res) => {
   const currentUserId = req.user?._id;
   const postsWithStatus = await Promise.all(
     userPosts.map(async (post) => {
-      const isLiked = currentUserId ? await Like.exists({ likedBy: currentUserId, post: post._id }) : false;
-      const isBookmarked = currentUserId ? await Bookmark.exists({ bookmarkedBy: currentUserId, post: post._id }) : false;
-      
+      const isLiked = currentUserId
+        ? await Like.exists({ likedBy: currentUserId, post: post._id })
+        : false;
+      const isBookmarked = currentUserId
+        ? await Bookmark.exists({ bookmarkedBy: currentUserId, post: post._id })
+        : false;
+
       return {
         ...post.toObject(),
         isLiked: !!isLiked,
         isBookmarked: !!isBookmarked,
       };
-    })
+    }),
   );
 
   res.status(200).json(
