@@ -4,6 +4,8 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { isValidObjectId } from "mongoose";
+import { Like } from "../models/likes.model.js";
+import { Bookmark } from "../models/bookmark.model.js";
 
 const addPost = asyncHandler(async (req, res) => {
   const { postContent } = req.body;
@@ -118,9 +120,23 @@ const getPostById = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Post not found.");
   }
 
+  const userId = req.user?._id;
+  const isLiked = userId
+    ? await Like.exists({ likedBy: userId, post: postId })
+    : false;
+  const isBookmarked = userId
+    ? await Bookmark.exists({ bookmarkedBy: userId, post: postId })
+    : false;
+
+  const postWithStatus = {
+    ...post.toObject(),
+    isLiked: !!isLiked,
+    isBookmarked: !!isBookmarked,
+  };
+
   res
     .status(200)
-    .json(new ApiResponse(200, "Post fetched successfully.", post));
+    .json(new ApiResponse(200, "Post fetched successfully.", postWithStatus));
 });
 
 const getAllPosts = asyncHandler(async (req, res) => {
@@ -128,9 +144,27 @@ const getAllPosts = asyncHandler(async (req, res) => {
     .populate("author", "name username avatar createdAt")
     .sort({ createdAt: -1 });
 
+  const userId = req.user?._id;
+  const postsWithStatus = await Promise.all(
+    posts.map(async (post) => {
+      const isLiked = userId
+        ? await Like.exists({ likedBy: userId, post: post._id })
+        : false;
+      const isBookmarked = userId
+        ? await Bookmark.exists({ bookmarkedBy: userId, post: post._id })
+        : false;
+
+      return {
+        ...post.toObject(),
+        isLiked: !!isLiked,
+        isBookmarked: !!isBookmarked,
+      };
+    }),
+  );
+
   res
     .status(200)
-    .json(new ApiResponse(200, "Posts fetched successfully.", posts));
+    .json(new ApiResponse(200, "Posts fetched successfully.", postsWithStatus));
 });
 
 export { addPost, updatePost, deletePost, getPostById, getAllPosts };

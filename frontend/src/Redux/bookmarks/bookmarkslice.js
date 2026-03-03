@@ -12,18 +12,22 @@ const bookmarkSlice = createSlice({
       state.bookmarks = action.payload;
     },
     updateBookmark: (state, action) => {
-      const { bookmarkId, isBookmarked, post } = action.payload;
+      const { post, isBookmarked } = action.payload;
 
       if (isBookmarked) {
         const existingBookmark = state.bookmarks.findIndex(
-          (b) => b._id === bookmarkId,
+          (b) => b.post._id === post._id,
         );
         if (existingBookmark === -1) {
-          state.bookmarks.unshift({ post: post, _id: bookmarkId });
+          state.bookmarks.unshift({
+            post: post,
+            _id: `bookmark_${post._id}`,
+            bookmarkedBy: post.author._id,
+          });
         }
       } else {
         const existingBookmark = state.bookmarks.findIndex(
-          (b) => b._id === bookmarkId,
+          (b) => b.post._id === post._id,
         );
         if (existingBookmark !== -1) {
           state.bookmarks.splice(existingBookmark, 1);

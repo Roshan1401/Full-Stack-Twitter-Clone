@@ -4,6 +4,8 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { Post } from "../models/post.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import { Like } from "../models/likes.model.js";
+import { Bookmark } from "../models/bookmark.model.js";
 
 const EditProfile = asyncHandler(async (req, res) => {
   const { name, bio } = req.body;
@@ -82,11 +84,26 @@ const getUserProfile = asyncHandler(async (req, res) => {
     .sort({ createdAt: -1 })
     .populate("author", "name username avatar");
 
+  // Check if current user has liked and bookmarked each post
+  const currentUserId = req.user?._id;
+  const postsWithStatus = await Promise.all(
+    userPosts.map(async (post) => {
+      const isLiked = currentUserId ? await Like.exists({ likedBy: currentUserId, post: post._id }) : false;
+      const isBookmarked = currentUserId ? await Bookmark.exists({ bookmarkedBy: currentUserId, post: post._id }) : false;
+      
+      return {
+        ...post.toObject(),
+        isLiked: !!isLiked,
+        isBookmarked: !!isBookmarked,
+      };
+    })
+  );
+
   res.status(200).json(
     new ApiResponse(200, "User fetched successfully.", {
       user,
-      posts: userPosts,
-      postCount: userPosts.length,
+      posts: postsWithStatus,
+      postCount: postsWithStatus.length,
       followers: user.followers,
       following: user.following,
     }),

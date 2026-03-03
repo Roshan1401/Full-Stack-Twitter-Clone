@@ -5,6 +5,7 @@ import {
   FaRegHeart,
   FaRegComment,
   FaRegBookmark,
+  FaBookmark,
 } from "react-icons/fa";
 import "./Post.css";
 import OverFlowMenu from "../common/OverFlowMenu";
@@ -12,7 +13,10 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import UserLink from "../common/UserLink";
 import { useApi } from "../../hooks/useApi";
-import { updatePostLikes } from "../../Redux/posts/postSlice";
+import {
+  updatePostLikes,
+  updatePostBookmark,
+} from "../../Redux/posts/postSlice";
 import { updateBookmark } from "../../Redux/bookmarks/bookmarkslice";
 
 function Post({ post }) {
@@ -88,11 +92,18 @@ function Post({ post }) {
       });
 
       if (data) {
+        // Update bookmark list
         dispatch(
           updateBookmark({
-            bookmarkId: data.bookmarkId,
             isBookmarked: data.isBookmarked,
             post: post,
+          }),
+        );
+        // Update post bookmark status
+        dispatch(
+          updatePostBookmark({
+            postId: post._id,
+            isBookmarked: data.isBookmarked,
           }),
         );
       }
@@ -170,9 +181,13 @@ function Post({ post }) {
           </button>
           <button
             onClick={() => handleBookmark()}
-            className="action-btn bookmark-btn"
+            className={`action-btn bookmark-btn ${post.isBookmarked ? "text-[#1d9bf0]" : ""}`}
           >
-            <FaRegBookmark size={18} />
+            {post.isBookmarked ? (
+              <FaBookmark size={18} color="#1d9bf0" />
+            ) : (
+              <FaRegBookmark size={18} />
+            )}
           </button>
         </div>
       </div>

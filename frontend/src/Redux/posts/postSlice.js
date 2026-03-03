@@ -23,9 +23,17 @@ const postSlice = createSlice({
         post.isLiked = isLiked;
       }
     },
+    updatePostBookmark: (state, action) => {
+      const { postId, isBookmarked } = action.payload;
+
+      const post = state.posts.find((p) => p._id === postId);
+      if (post) {
+        post.isBookmarked = isBookmarked;
+      }
+    },
   },
 });
 
-export const { setPosts, addPost, updatePostLikes } = postSlice.actions;
+export const { setPosts, addPost, updatePostLikes, updatePostBookmark } = postSlice.actions;
 
 export default postSlice.reducer;

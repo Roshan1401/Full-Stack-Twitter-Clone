@@ -2,6 +2,7 @@ import { isValidObjectId } from "mongoose";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { Post } from "../models/post.model.js";
+import { Like } from "../models/likes.model.js";
 import { Bookmark } from "../models/bookmark.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
@@ -68,9 +69,33 @@ const getBookmarks = asyncHandler(async (req, res) => {
     },
   });
 
+  const userId = req.user._id;
+  const bookmarkswithStatus = await Promise.all(
+    bookmarks.map(async (bookmark) => {
+      const isLiked = userId
+        ? await Like.exists({ likedBy: userId, post: bookmark.post._id })
+        : false;
+      const isBookmarked = userId
+        ? await Bookmark.exists({
+            bookmarkedBy: userId,
+            post: bookmark.post._id,
+          })
+        : false;
+
+      return {
+        ...bookmark.toObject(),
+        post: {
+          ...bookmark.post.toObject(),
+          isLiked: !!isLiked,
+          isBookmarked: !!isBookmarked,
+        },
+      };
+    }),
+  );
+
   return res.status(200).json(
     new ApiResponse(200, "Bookmarks retrieved successfully", {
-      bookmarks: bookmarks,
+      bookmarks: bookmarkswithStatus,
     }),
   );
 });
