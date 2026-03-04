@@ -1,5 +1,8 @@
 import { useState, useCallback } from "react";
 import axios from "axios";
+
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 export function useApi() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -10,7 +13,7 @@ export function useApi() {
     try {
       const response = await axios({
         method,
-        url: `http://localhost:5000/api/v1${url}`,
+        url: `${API_BASE_URL}/api/v1${url}`,
         data,
         withCredentials: true,
       });
