@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Follows from "./FollowComponent/Follows";
-import "./RIghtBar.css";
+import "./RightBar.css";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useApi } from "../../../hooks/useApi";
