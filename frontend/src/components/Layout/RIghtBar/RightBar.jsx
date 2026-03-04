@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { FiSearch } from "react-icons/fi";
 import Follows from "./FollowComponent/Follows";
 import "./RightBar.css";
 import { useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
-import UserAvatar from "../../common/UserAvatar";
+import { useParams } from "react-router-dom";
 import { useApi } from "../../../hooks/useApi";
 import { userProfileRefetch } from "../../../hooks/userProfileRefetch";
 import Search from "../../common/Search";
