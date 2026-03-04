@@ -1,6 +1,6 @@
 import "./App.css";
 import LeftBar from "./components/Layout/LeftBar/LeftBar";
-import RightBar from "./components/Layout/RIghtBar/RightBar";
+import RightBar from "./components/Layout/RightBar/RightBar";
 import { Outlet } from "react-router-dom";
 
 function App() {
