@@ -23,11 +23,11 @@ const EditProfile = asyncHandler(async (req, res) => {
   let uploadedBanner = null;
 
   if (avatarFile?.path) {
-    uploadedAvatar = await uploadOnCloudinary(avatarFile.path, "avatars");
+    uploadedAvatar = await uploadOnCloudinary(avatarFile.path);
   }
 
   if (bannerFile?.path) {
-    uploadedBanner = await uploadOnCloudinary(bannerFile.path, "banners");
+    uploadedBanner = await uploadOnCloudinary(bannerFile.path);
   }
 
   const updatedUser = await User.findByIdAndUpdate(
