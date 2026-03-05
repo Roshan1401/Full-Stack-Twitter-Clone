@@ -58,7 +58,7 @@ function LeftBar() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const {request} = useApi();
+  const { request } = useApi();
 
   const scrollHomeToTop = () => {
     document.body.scrollTo({ top: 0, behavior: "auto" });
@@ -78,7 +78,7 @@ function LeftBar() {
     <div className="nav-container">
       <nav>
         <div>
-          <Link to="/home">
+          <Link to="/">
             <div className="logo">
               <img src={logo} alt="Logo" />
             </div>
