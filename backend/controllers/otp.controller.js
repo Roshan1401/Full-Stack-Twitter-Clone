@@ -54,7 +54,9 @@ const sendOtp = asyncHandler(async (req, res) => {
   });
 
   const transporter = nodemailer.createTransport({
-    service: "Gmail",
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false,
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASSWORD,
@@ -76,13 +78,13 @@ const sendOtp = asyncHandler(async (req, res) => {
 
 const verifyOtp = asyncHandler(async (req, res) => {
   const { email, otp, name, username, password } = req.body;
-  
+
   const normalizedOtp = String(otp || "").trim();
-  
+
   if (!/^\d{6}$/.test(normalizedOtp)) {
     throw new ApiError(400, "OTP must be a 6-digit number");
   }
-  
+
   const otpRecord = await OTP.findOne({ email });
 
   if (!otpRecord) {
