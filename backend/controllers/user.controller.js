@@ -19,30 +19,39 @@ const EditProfile = asyncHandler(async (req, res) => {
     );
   }
 
-  const uploadedAvatar = avatarFile
-    ? await uploadOnCloudinary(avatarFile.path, "avatars")
-    : null;
+  let uploadedAvatar = null;
+  let uploadedBanner = null;
 
-  const uploadedBanner = bannerFile
-    ? await uploadOnCloudinary(bannerFile.path, "banners")
-    : null;
+  if (avatarFile?.path) {
+    uploadedAvatar = await uploadOnCloudinary(avatarFile.path, "avatars");
+  }
 
-  const updatedUser = await User.findByIdAndUpdate(req.user._id, {
-    name: name || req.user.name,
-    bio: bio || req.user.bio,
-    avatar: uploadedAvatar
-      ? {
-          url: uploadedAvatar.secure_url,
-          publicId: uploadedAvatar.public_id,
-        }
-      : req.user.avatar,
-    banner: uploadedBanner
-      ? {
-          url: uploadedBanner.secure_url,
-          publicId: uploadedBanner.public_id,
-        }
-      : req.user.banner,
-  });
+  if (bannerFile?.path) {
+    uploadedBanner = await uploadOnCloudinary(bannerFile.path, "banners");
+  }
+
+  const updatedUser = await User.findByIdAndUpdate(
+    req.user._id,
+    {
+      name: name || req.user.name,
+      bio: bio || req.user.bio,
+      avatar: uploadedAvatar
+        ? {
+            url: uploadedAvatar.secure_url,
+            publicId: uploadedAvatar.public_id,
+          }
+        : req.user.avatar,
+      banner: uploadedBanner
+        ? {
+            url: uploadedBanner.secure_url,
+            publicId: uploadedBanner.public_id,
+          }
+        : req.user.banner,
+    },
+    {
+      new: true,
+    },
+  );
 
   if (!updatedUser) {
     throw new ApiError(
