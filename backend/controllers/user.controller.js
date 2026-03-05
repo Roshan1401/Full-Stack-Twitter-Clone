@@ -8,9 +8,6 @@ import { Like } from "../models/likes.model.js";
 import { Bookmark } from "../models/bookmark.model.js";
 
 const EditProfile = asyncHandler(async (req, res) => {
-  console.log("Edit profile route hit");
-  console.log("body:", req.body);
-  console.log("files:", req.files);
   const { name, bio } = req.body;
   const avatarFile = req.files?.avatar?.[0];
   const bannerFile = req.files?.banner?.[0];

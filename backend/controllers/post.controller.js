@@ -25,8 +25,6 @@ const addPost = asyncHandler(async (req, res) => {
   for (const file of f) {
     const uploadedFile = await uploadOnCloudinary(file.path);
     if (uploadedFile) {
-      console.log(file.mimetype);
-
       uploadedFiles.push({
         url: uploadedFile.secure_url,
         publicId: uploadedFile.public_id,

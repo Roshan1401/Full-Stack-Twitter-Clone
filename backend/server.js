@@ -8,13 +8,11 @@ dotenv.config({
   path: "./.env",
 });
 
-console.log("Environment variables loaded:", process.env.PORT);
 const PORT = process.env.PORT || 5000;
 
 (async () => {
   try {
     await mongoose.connect(`${process.env.MONGODB_URI}/X-Clone`);
-    console.log("Connected to MongoDB");
     app.listen(PORT, () => {
       console.log(`Server is running on http://localhost:${PORT}`);
     });
