@@ -1,8 +1,7 @@
 import { OTP } from "../models/otp.model.js";
-import dns from "dns";
+import { Resend } from "resend";
 import { User } from "../models/user.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import nodemailer from "nodemailer";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
@@ -54,22 +53,13 @@ const sendOtp = asyncHandler(async (req, res) => {
     expiresAt: new Date(Date.now() + 3 * 60 * 1000),
   });
 
-  dns.setDefaultResultOrder("ipv4first");
+  const resend = new Resend(process.env.RESEND_API_KEY);
 
-  const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false,
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASSWORD,
-    },
-  });
-  await transporter.sendMail({
+  await resend.emails.send({
     from: process.env.EMAIL_USER,
     to: email,
     subject: "Your OTP",
-    text: `Your OTP is ${otp}`,
+    html: `Your OTP is ${otp}`,
   });
 
   return res.status(200).json(
