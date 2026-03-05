@@ -1,4 +1,5 @@
 import { OTP } from "../models/otp.model.js";
+import dns from "dns";
 import { User } from "../models/user.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import nodemailer from "nodemailer";
@@ -52,6 +53,8 @@ const sendOtp = asyncHandler(async (req, res) => {
     otp,
     expiresAt: new Date(Date.now() + 3 * 60 * 1000),
   });
+
+  dns.setDefaultResultOrder("ipv4first");
 
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
