@@ -120,7 +120,7 @@ function EditProfile({ onClose }) {
                   <Input
                     type="file"
                     hidden
-                    accept="image/"
+                    accept="image/*"
                     {...register("banner")}
                     onChange={(e) => handleFileChange(e, "banner")}
                   />
@@ -137,7 +137,7 @@ function EditProfile({ onClose }) {
                   <Input
                     type="file"
                     hidden
-                    accept="image/"
+                    accept="image/*"
                     {...register("avatar")}
                     onChange={(e) => handleFileChange(e, "avatar")}
                   />
