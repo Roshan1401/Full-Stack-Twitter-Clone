@@ -29,7 +29,6 @@ function Home() {
       }
     };
     fetchPosts();
-    console.log("Posts in Home:", posts);
   }, []);
 
   // console.log(posts);
