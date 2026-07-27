@@ -7,10 +7,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://full-stack-twitter-clone-beige.vercel.app",
-    ],
+    origin: ["http://localhost:5173", "https://devtalkk.vercel.app"],
     credentials: true,
   }),
 );
