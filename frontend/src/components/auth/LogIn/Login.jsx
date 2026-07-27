@@ -43,27 +43,6 @@ function Login() {
       alert("Login failed");
     }
   };
-    {
-      name: "email",
-      type: "email",
-      placeholder: "Enter Your Email",
-      validation: {
-        required: "Email is required",
-        pattern: {
-          value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-          message: "Email must be a valid address",
-        },
-      },
-    },
-    {
-      name: "password",
-      type: "password",
-      placeholder: "Enter Your Password",
-      validation: {
-        required: "Password is required",
-      },
-    },
-  ];
 
   return (
     <AuthFormLayout

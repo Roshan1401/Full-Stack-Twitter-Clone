@@ -101,54 +101,7 @@ function SignUp() {
   //     alert("OTP verification failed. Please try again.");
   //   }
   // };
-    {
-      name: "name",
-      type: "text",
-      placeholder: "Enter Your Name",
-      validation: {
-        required: "Name is required",
-      },
-    },
-    {
-      name: "username",
-      type: "text",
-      placeholder: "Enter username",
-      validation: {
-        required: "username is required",
-      },
-    },
-    {
-      name: "email",
-      type: "email",
-      placeholder: "Enter Your Email",
-      validation: {
-        required: "Email is required",
-        pattern: {
-          value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-          message: "Email address must be a valid address",
-        },
-      },
-    },
-    {
-      name: "password",
-      type: "password",
-      placeholder: "Enter Your Password",
-      validation: {
-        required: "Password is required",
-        pattern: {
-          value:
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-          message:
-            "Password must be 8+ chars, include uppercase, lowercase, number & special character",
-        },
-      },
-    },
-  ];
 
-  // return
-  // showOtpForm ? (
-  //   <OtpInput onOtpSubmit={onOtpSubmit} email={signupFormData?.email} />
-  // ) :
   return (
     <AuthFormLayout
       title="Sign Up"

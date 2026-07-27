@@ -117,7 +117,7 @@ function Post({ post }) {
       </div>
       <div className="post-content">
         <div className="post-header">
-          <UserLink username={author?.username} />
+          <UserLink username={author?.username} name={author?.name} />
           <UserLink username={author?.username} variant="username" />
           <span className="post-time">· {timeAgo(post.createdAt)}</span>
 

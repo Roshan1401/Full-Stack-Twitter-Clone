@@ -16,10 +16,12 @@ function Home() {
 
   useEffect(() => {
     console.log("Fetching posts...");
+
     const fetchPosts = async () => {
       try {
         const data = await request("GET", "/post/getAllPosts");
         if (data) {
+          console.log("Fetched posts:", data);
           dispatch(setPosts(data));
         }
       } catch (error) {
@@ -29,6 +31,7 @@ function Home() {
       }
     };
     fetchPosts();
+    console.log("Posts after fetch:", posts);
   }, [request, dispatch]);
 
   // console.log(posts);
@@ -45,10 +48,12 @@ function Home() {
             <LoadingSpinner variant="page" />
           ) : (
             <div className="posts-list">
-              {posts.length === 0 && (
+              {posts.length === 0 ? (
                 <p className="no-posts-message">
                   No posts available. Follow users to see their posts.
                 </p>
+              ) : (
+                posts.map((post) => <Post key={post._id} post={post} />)
               )}
             </div>
           )}
