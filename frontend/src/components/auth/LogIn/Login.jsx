@@ -5,6 +5,29 @@ import { login as authLogin } from "../../../Redux/auth/authSlice.js";
 import { useApi } from "../../../hooks/useApi.js";
 import AuthFormLayout from "../AuthFormLayout.jsx";
 
+const fields = [
+  {
+    name: "email",
+    type: "email",
+    placeholder: "Enter Your Email",
+    validation: {
+      required: "Email is required",
+      pattern: {
+        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+        message: "Email must be a valid address",
+      },
+    },
+  },
+  {
+    name: "password",
+    type: "password",
+    placeholder: "Enter Your Password",
+    validation: {
+      required: "Password is required",
+    },
+  },
+];
+
 function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -20,8 +43,6 @@ function Login() {
       alert("Login failed");
     }
   };
-
-  const fields = [
     {
       name: "email",
       type: "email",

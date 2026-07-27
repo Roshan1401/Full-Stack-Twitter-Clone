@@ -1,8 +1,9 @@
-import React, { useId } from "react";
+import { useId } from "react";
 import "../Input/Input.css";
 
-function Input({ type = "text", className = "", ...props }, ref) {
-  const id = useId();
+function Input({ type = "text", className = "", ref, id: externalId, ...props }) {
+  const generatedId = useId();
+  const id = externalId || generatedId;
   return (
     <div className="input-container text-white">
       <input
@@ -16,4 +17,4 @@ function Input({ type = "text", className = "", ...props }, ref) {
   );
 }
 
-export default React.forwardRef(Input);
+export default Input;

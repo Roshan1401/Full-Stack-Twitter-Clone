@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Camera } from "lucide-react";
 import Input from "../Input/Input";
 import { useForm } from "react-hook-form";
@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setUserInfo } from "../../Redux/auth/authSlice";
 import LoadingSpinner from "../common/LoadingSpinner.jsx";
 import { useApi } from "../../hooks/useApi.js";
-import { userProfileRefetch } from "../../hooks/userProfileRefetch.js";
+import { useUserProfileRefetch } from "../../hooks/userProfileRefetch.js";
 
 function EditProfile({ onClose }) {
   const [loading, setLoading] = useState(false);
@@ -17,15 +17,10 @@ function EditProfile({ onClose }) {
   });
   const currentUser = useSelector((state) => state.auth.userInfo);
   const { request } = useApi();
-  const refetchProfile = userProfileRefetch();
+  const refetchProfile = useUserProfileRefetch();
 
-  const [avatar, setAvatar] = useState(currentUser?.avatar || "/userLogo1.jpg");
-  const [banner, setBanner] = useState(currentUser?.banner || "/banner.jpg");
-
-  useEffect(() => {
-    setAvatar(currentUser?.avatar || "/userLogo1.jpg");
-    setBanner(currentUser?.banner || "/banner.jpg");
-  }, [currentUser]);
+  const avatar = currentUser?.avatar || "/userLogo1.jpg";
+  const banner = currentUser?.banner || "/banner.jpg";
 
   const dispatch = useDispatch();
   const username = currentUser?.username;
@@ -91,7 +86,7 @@ function EditProfile({ onClose }) {
       <form className="p-2" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex items-center justify-center gap-10 text-white">
           <div className="flex cursor-pointer items-center justify-center rounded-full px-2 py-1 text-2xl hover:bg-[rgba(67,67,67,0.7)]">
-            <button onClick={onClose}>✕</button>
+            <button type="button" onClick={onClose}>✕</button>
           </div>
           <h1 className="text-xl">Edit Profile</h1>
           <button
@@ -115,10 +110,11 @@ function EditProfile({ onClose }) {
             />
             <div className="absolute inset-0 z-10 flex items-center justify-center text-white">
               <div className="cursor-pointer rounded-full bg-[rgba(67,67,67,0.7)] p-2 hover:bg-white hover:text-black">
-                <label className="cursor-pointer">
+                <label htmlFor="banner-upload" className="cursor-pointer">
                   <Camera />
                   <Input
                     type="file"
+                    id="banner-upload"
                     hidden
                     accept="image/*"
                     {...register("banner")}
@@ -132,10 +128,11 @@ function EditProfile({ onClose }) {
           <div className="bottom absolute inset-x-0 top-28 ml-5 h-33.5 w-33.5 overflow-hidden rounded-full border-4 border-black bg-gray-300">
             <div className="absolute inset-0 z-10 flex items-center justify-center text-white">
               <div className="cursor-pointer rounded-full bg-[rgba(67,67,67,0.7)] p-2 hover:bg-white hover:text-black">
-                <label className="cursor-pointer">
+                <label htmlFor="avatar-upload" className="cursor-pointer">
                   <Camera />
                   <Input
                     type="file"
+                    id="avatar-upload"
                     hidden
                     accept="image/*"
                     {...register("avatar")}

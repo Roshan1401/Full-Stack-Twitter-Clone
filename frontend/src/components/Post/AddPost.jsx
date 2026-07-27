@@ -102,8 +102,8 @@ function AddPost({ variant = "inline", onClose }) {
           />
 
           <div className="file-preview-container">
-            {selectFile.map((file, index) => (
-              <div className="file-previw-item" key={index}>
+            {selectFile.map((file) => (
+              <div className="file-previw-item" key={file.preview}>
                 {file.file.type.startsWith("image/") ? (
                   <img
                     src={file.preview}
@@ -116,7 +116,10 @@ function AddPost({ variant = "inline", onClose }) {
                     className="file-preview"
                     controls
                     muted
-                  />
+                    aria-label="Video preview"
+                  >
+                    <track kind="captions" />
+                  </video>
                 ) : null}
 
                 <div className="file-preview-close">
@@ -133,15 +136,16 @@ function AddPost({ variant = "inline", onClose }) {
           )}
 
           <div className="post-options">
-            <label>
+            <label htmlFor="image-upload">
               <FiImage className="image-icon" size={22} />
-              <Input
-                type="file"
-                className="file-input"
-                hidden
-                multiple
-                accept="image/*,video/*"
-                {...register("files", {
+                  <Input
+                    type="file"
+                    className="file-input"
+                    id="image-upload"
+                    hidden
+                    multiple
+                    accept="image/*,video/*"
+                    {...register("files", {
                   onChange: (e) => {
                     handleFiles(e);
                   },

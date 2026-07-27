@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import logo from "../../../assets/logo.svg";
 import { MdHome } from "react-icons/md";
@@ -15,11 +15,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout as authLogout } from "../../../Redux/auth/authSlice";
 import { useApi } from "../../../hooks/useApi.js";
 
+const scrollHomeToTop = () => {
+  document.body.scrollTo({ top: 0, behavior: "auto" });
+};
+
 function LeftBar() {
   const user = useSelector((state) => state.auth.userInfo);
   const username = user?.username;
 
-  const barItems = [
+  const barItems = useMemo(() => [
     {
       name: "Home",
       slug: "/",
@@ -50,7 +54,7 @@ function LeftBar() {
       slug: "/setting",
       icon: <FiSettings />,
     },
-  ];
+  ], [username]);
 
   const [showAddPost, setShowAddPost] = useState(false);
 
@@ -59,10 +63,6 @@ function LeftBar() {
   const location = useLocation();
 
   const { request } = useApi();
-
-  const scrollHomeToTop = () => {
-    document.body.scrollTo({ top: 0, behavior: "auto" });
-  };
 
   const handleLogout = async () => {
     try {
@@ -108,7 +108,7 @@ function LeftBar() {
           ))}
         </ul>
         <div className="post-btn">
-          <button onClick={() => setShowAddPost(true)}>Post</button>
+          <button type="button" onClick={() => setShowAddPost(true)}>Post</button>
         </div>
 
         <div className="profile-btn">
@@ -121,7 +121,7 @@ function LeftBar() {
               <div>@{user?.username}</div>
             </Link>
             <OverFlowMenu>
-              <button className="" onClick={() => handleLogout()}>
+              <button type="button" className="" onClick={() => handleLogout()}>
                 Logout
               </button>
             </OverFlowMenu>{" "}

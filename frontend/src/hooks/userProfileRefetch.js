@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { setUserProfile } from "../Redux/profile/profileSlice";
 
-export function userProfileRefetch() {
+export function useUserProfileRefetch() {
   const dispatch = useDispatch();
   const refetchProfile = useCallback(async (username, request) => {
     if (!username) return;

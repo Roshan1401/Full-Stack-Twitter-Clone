@@ -1,14 +1,12 @@
-import React from "react";
-import "../Modal/Modal.css";
 import { createPortal } from "react-dom";
 
 function Modal({ children, onClose }) {
   return createPortal(
-    <div className="modal-overlay" onClick={onClose}>
+    <dialog className="modal-overlay" open onClose={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         {children}
       </div>
-    </div>,
+    </dialog>,
     document.body,
   );
 }

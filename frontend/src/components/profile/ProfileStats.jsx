@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import FollowBtn from "../common/FollowBtn";
 import { useApi } from "../../hooks/useApi.js";
-import { userProfileRefetch } from "../../hooks/userProfileRefetch.js";
+import { useUserProfileRefetch } from "../../hooks/userProfileRefetch.js";
 
 function ProfileStats({ onOpen }) {
   const [scrollBlur, setScrollBlur] = useState(0);
@@ -19,7 +19,7 @@ function ProfileStats({ onOpen }) {
   const [showEditProfile, setShowEditProfile] = useState(true);
   const paramsUsername = useParams().username;
 
-  const refetchProfile = userProfileRefetch();
+  const refetchProfile = useUserProfileRefetch();
 
   const handleFollow = async (state) => {
     if (!state || !user?._id) return;
@@ -37,7 +37,7 @@ function ProfileStats({ onOpen }) {
       setScrollBlur(blur);
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -73,6 +73,7 @@ function ProfileStats({ onOpen }) {
         <div className="mb-10 ml-auto flex justify-end">
           {showEditProfile ? (
             <button
+              type="button"
               className="text-md cursor-pointer rounded-4xl border border-solid border-[rgb(83,100,113)] px-4 py-2 font-semibold text-white duration-75 hover:bg-[rgba(67,67,67,0.4)]"
               onClick={onOpen}
             >

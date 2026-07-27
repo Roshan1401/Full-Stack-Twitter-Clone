@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import UserAvatar from "./UserAvatar.jsx";
 import { useApi } from "../../hooks/useApi.js";
-import { userProfileRefetch } from "../../hooks/userProfileRefetch.js";
+
 function Search({ className }) {
   const [search, setSearch] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -40,6 +40,7 @@ function Search({ className }) {
         <input
           type="text"
           placeholder="Search"
+          aria-label="Search"
           onChange={(e) => handleSearch(e.target.value)}
           className="flex-1 border-none bg-transparent text-[0.9375rem] font-normal text-white outline-none"
         />

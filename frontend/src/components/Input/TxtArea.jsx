@@ -1,8 +1,7 @@
-import React from "react";
 import { useRef } from "react";
 import "../Input/TextArea.css";
 
-function TxtArea({ ...props }, ref) {
+function TxtArea({ ref: forwardedRef, ...props }) {
   const textAreaRef = useRef(null);
   const handleInput = () => {
     const textArea = textAreaRef.current;
@@ -15,8 +14,8 @@ function TxtArea({ ...props }, ref) {
       {...props}
       ref={(el) => {
         textAreaRef.current = el;
-        if (ref) {
-          ref(el);
+        if (forwardedRef) {
+          forwardedRef(el);
         }
       }}
       onInput={handleInput}
@@ -26,4 +25,4 @@ function TxtArea({ ...props }, ref) {
   );
 }
 
-export default React.forwardRef(TxtArea);
+export default TxtArea;

@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
+const tabItems = [
+  { name: "Posts", id: "post", slug: "" },
+  { name: "Replies", id: "replies", slug: "replies" },
+  { name: "Highlights", id: "highlights", slug: "highlights" },
+  { name: "Aricles", id: "articles", slug: "articles" },
+  { name: "Likes", id: "likes", slug: "likes" },
+];
+
 function ProfileTabs() {
   const [active, setActive] = useState("post");
   const navigate = useNavigate();
-
-  const tabItems = [
-    { name: "Posts", id: "post", slug: "" },
-    { name: "Replies", id: "replies", slug: "replies" },
-    { name: "Highlights", id: "highlights", slug: "highlights" },
-    { name: "Aricles", id: "articles", slug: "articles" },
-    { name: "Likes", id: "likes", slug: "likes" },
-  ];
 
   return (
     <div className="flex h-12.5 w-full border-b border-[#2f3336] bg-black/75 backdrop-blur-[15px]">
@@ -24,7 +24,10 @@ function ProfileTabs() {
         >
           <div
             className="relative inline-flex flex-col items-center"
+            role="tab"
+            tabIndex={0}
             onClick={() => navigate(`/${item.slug}`)}
+            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") navigate(`/${item.slug}`); }}
           >
             <span
               className={`text-[15px] font-semibold ${

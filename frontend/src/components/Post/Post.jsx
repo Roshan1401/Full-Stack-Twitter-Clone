@@ -19,28 +19,28 @@ import {
 } from "../../Redux/posts/postSlice";
 import { updateBookmark } from "../../Redux/bookmarks/bookmarkslice";
 
+function timeAgo(timestamp) {
+  const now = new Date();
+  const postDate = new Date(timestamp);
+  const diff = Math.floor((now - postDate) / 1000);
+
+  if (diff < 60) return `${diff}s ago`;
+  if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+  if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+  return `${Math.floor(diff / 86400)}d ago`;
+}
+
 function Post({ post }) {
   const { content, files, author } = post;
-  const [showMenu, setShowMenu] = useState(false);
+  const showMenu = useRef(false);
   const menuRef = useRef(null);
   const { request } = useApi();
   const dispatch = useDispatch();
 
-  const timeAgo = (timestamp) => {
-    const now = new Date();
-    const postDate = new Date(timestamp);
-    const diff = Math.floor((now - postDate) / 1000);
-
-    if (diff < 60) return `${diff}s ago`;
-    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
-    if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
-    return `${Math.floor(diff / 86400)}d ago`;
-  };
-
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
-        setShowMenu(false);
+        showMenu.current = false;
       }
     };
 
@@ -52,13 +52,13 @@ function Post({ post }) {
   }, []);
 
   const handleEdit = () => {
-    setShowMenu(false);
+    showMenu.current = false;
     console.log("Edit Post");
     //post edit
   };
 
   const handleDelete = () => {
-    setShowMenu(false);
+    showMenu.current = false;
     console.log("Delete post");
     //delete post api
   };
@@ -122,8 +122,8 @@ function Post({ post }) {
           <span className="post-time">· {timeAgo(post.createdAt)}</span>
 
           <OverFlowMenu>
-            <button onClick={handleEdit}>Edit</button>
-            <button className="delete" onClick={handleDelete}>
+            <button type="button" onClick={handleEdit}>Edit</button>
+            <button type="button" className="delete" onClick={handleDelete}>
               Delete
             </button>
           </OverFlowMenu>
@@ -144,7 +144,7 @@ function Post({ post }) {
                     key={file.publicId}
                     src={file.url}
                     className="h-full w-full rounded-2xl object-cover"
-                    alt={`Post Image ${file.publicId}`}
+                    alt={`Post by ${author?.username || "user"}`}
                   />
                 ) : file.type.startsWith("video/") ? (
                   <video
@@ -152,7 +152,10 @@ function Post({ post }) {
                     src={file.url}
                     className="h-full w-full rounded-2xl object-cover"
                     controls
-                  />
+                    aria-label="Post video"
+                  >
+                    <track kind="captions" />
+                  </video>
                 ) : null}
               </div>
             ))}
@@ -161,6 +164,7 @@ function Post({ post }) {
 
         <div className="post-actions">
           <button
+            type="button"
             className={`action-btn heart-btn ${post.isLiked ? "text-[#e0245e]" : ""}`}
             onClick={() => handleLike()}
           >
@@ -173,11 +177,12 @@ function Post({ post }) {
               {post.likes}
             </span>
           </button>
-          <button className="action-btn comment-btn">
+          <button type="button" className="action-btn comment-btn">
             <FaRegComment size={18} />
             <span></span>
           </button>
           <button
+            type="button"
             onClick={() => handleBookmark()}
             className={`action-btn bookmark-btn ${post.isBookmarked ? "text-[#1d9bf0]" : ""}`}
           >

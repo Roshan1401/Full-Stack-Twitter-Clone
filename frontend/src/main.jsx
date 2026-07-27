@@ -5,13 +5,11 @@ import { Provider } from "react-redux";
 import store from "./Redux/store.js";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import {
-  Home,
-  AuthLayout,
-  Login,
-  SignUp,
-  AddPost,
-} from "./components/index.js";
+import Home from "./components/pages/Home/Home.jsx";
+import AuthLayout from "./components/auth/AuthLayout.jsx";
+import Login from "./components/auth/LogIn/Login.jsx";
+import SignUp from "./components/auth/SignUp/SignUp.jsx";
+import AddPost from "./components/Post/AddPost.jsx";
 import Profile from "./components/pages/Profile.jsx";
 import ProfilePosts from "./components/profile/ProfilePosts.jsx";
 import ProfileReplies from "./components/profile/ProfileReplies.jsx";

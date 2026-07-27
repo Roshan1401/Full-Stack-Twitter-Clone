@@ -25,6 +25,7 @@ function OverFlowMenu({ children, className }) {
   return (
     <div className="post-menu-wrapper" ref={menuRef}>
       <button
+        type="button"
         className={`post-menu-btn ${className}`}
         onClick={() => setShowMenu((prev) => !prev)}
       >

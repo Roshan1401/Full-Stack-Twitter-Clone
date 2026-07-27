@@ -4,7 +4,7 @@ import "./RightBar.css";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useApi } from "../../../hooks/useApi";
-import { userProfileRefetch } from "../../../hooks/userProfileRefetch";
+import { useUserProfileRefetch } from "../../../hooks/userProfileRefetch";
 import Search from "../../common/Search";
 
 function RightBar() {
@@ -12,11 +12,8 @@ function RightBar() {
   const paramsUsername = params.username;
   const currentUser = useSelector((state) => state.auth.userInfo);
   const [profiles, setProfiles] = useState([]);
-
-  const [search, setSearch] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
   const { request } = useApi();
-  const refetchProfile = userProfileRefetch();
+  const refetchProfile = useUserProfileRefetch();
 
   const handleFollow = async (action, userId) => {
     try {
@@ -54,30 +51,6 @@ function RightBar() {
     };
     fetchRandomUsers();
   }, [request]);
-
-  const handleSearch = (query) => {
-    setSearch(query);
-  };
-
-  useEffect(() => {
-    setSearchResults([]);
-    const delayDebounceFn = setTimeout(() => {
-      const searchUsers = async () => {
-        try {
-          const data = await request("GET", `/search/users?query=${search}`);
-          setSearchResults(data);
-        } catch (error) {
-          console.error("Error searching users:", error);
-        }
-      };
-
-      if (search.trim() !== "") {
-        searchUsers();
-      }
-    }, 500);
-
-    return () => clearTimeout(delayDebounceFn);
-  }, [search, request]);
 
   return (
     <div className="RightBar-container">
